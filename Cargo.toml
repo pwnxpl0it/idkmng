@@ -1,0 +1,13 @@
+[package]
+name = "idkmng"
+version = "0.1.0"
+edition = "2021"
+repository = "https://github.com/0xr00t3d/idkmng"
+authors = ["Mohamed Tarek @0xr00t3d"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "3.2.17", features = ["derive"] }
+serde = { version = "1.0.152", features = ["serde_derive"] }
+toml = "0.5.9"
