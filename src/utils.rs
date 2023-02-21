@@ -4,6 +4,7 @@ use std::{
     path::Path,
     env, fs, io
 };
+use crate::config::Config;
 use toml;
 
 fn create_dirs(dir: &str) {
@@ -20,18 +21,22 @@ fn write_content(path: &str, content: String) {
     }
 }
 
-fn init_keywords() -> HashMap<&'static str, String> {
-    let mut keywords = HashMap::new(); //TODO: Add custom keywords
-    keywords.insert("$HOME", env::var("HOME").unwrap());
-    keywords.insert("$PROJECTNAME", "".to_string());
-    keywords.insert("$CURRENTDIR", env::current_dir().unwrap()
+fn init_keywords() -> HashMap<String, String> {
+    let mut keywords = HashMap::new();
+    keywords.insert("$HOME".to_string(), env::var("HOME").unwrap());
+    keywords.insert("$PROJECTNAME".to_string(), "".to_string());
+    keywords.insert("$CURRENTDIR".to_string(), env::current_dir().unwrap()
                     .file_name().unwrap()
                     .to_str().unwrap()
                     .to_string());
+    let other_keywords = Config{
+        path: format!("{}/.config/idkmng/config.toml",keywords["$HOME"]),
+    }.get_keywords(); // Special keywords
+    keywords.extend(other_keywords);
     keywords
 }
 
-fn replace_keywords(keywords: HashMap<&str, String>, mut data: String) -> String {
+fn replace_keywords(keywords: HashMap<String, String>, mut data: String) -> String {
     for (key, value) in keywords.iter() {
         data = data.replace(key, value);
     }
@@ -130,7 +135,7 @@ impl Template {
                     println!("Project name: ");
                     io::stdin().read_line(&mut project).unwrap();
                     project = project.trim().to_string();
-                    keywords.insert("$PROJECTNAME", project.to_owned());
+                    keywords.insert("$PROJECTNAME".to_string(), project.to_owned());
                 }
             }
 
@@ -160,7 +165,7 @@ impl Template {
     }
 
     // I think this should be implemented in Cli::args idk it just works
-    fn validate_template(mut template: String, keywords: HashMap<&str, String>) -> String {
+    fn validate_template(mut template: String, keywords: HashMap<String, String>) -> String {
         if template.contains(".toml") {
             //IGNORE
         } else {
