@@ -22,12 +22,6 @@ same for any other thing because it is template-based like: nvim plugins, browse
 
 This gives you the ability to customize your projects initialization process as you want for example, you can have more than one template to create a browser extension but they are different in `manifest.json` or whatever.
 
-💡 If you have many templates with long names and you're too lazy to type them I recommend using a fuzzy finder like fzf and use the following trick
-```sh 
-$ idkmng `ls ~/.config/idkmng/templates | fzf`
-```
-you can also create a binding for it in tmux for example, and if you're using Neovim scroll down to the bottom, I have a gift for you.
-
 ## Installation
 If you have Rust 🦀 🚀 installed on your machine run the following command:
 
@@ -72,10 +66,21 @@ content=""" # File content
 so it's super easy to write and you can get this structure using `idkmng new`.
 `path` represents the path of the file you want to save content into, and `content` represents the content of the file,
 and so on,you can have as much files as you want,
-`path` and `content` can have `$PROJECTNAME`, `$CURRENTDIR` `$HOME` for now as a special *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `$CURRENTDIR` is provided!,same with `$HOME`.
+`path` and `content` can have `$PROJECTNAME`, `$CURRENTDIR` `$HOME` for as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `$CURRENTDIR` is provided!,same with `$HOME`.
 
 ### Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
+
+## Special Keywords 🔧
+You can have your own Keywords for idkmng to replace with desired values!
+Idkmng finds them stored in $HOME/.config/idkmng/config.toml
+```toml
+[Keywords]
+AUTHOR = "Mohamed Tarek"
+USERNAME = "@0xr00t3d"
+GITHUB = "https://github.com/0xr00t3d"
+etc .....
+```
 
 ## Neovim plugin(idkmng.nvim)
 I wrote a neovim plugin that makes it a way easier, Check it out [idkmng.nvim](https://www.github.com/0xr00t3d/idkmng.nvim).

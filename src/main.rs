@@ -1,5 +1,6 @@
 mod args;
 mod utils;
+mod config;
 use utils::*;
 use args::Cli;
 
