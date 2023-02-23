@@ -6,6 +6,8 @@ pub struct Config {
     pub path: String,
 } 
 
+pub const CONFIG_PATH: &str = "{{$HOME}}/.config/idkmng/config.toml";
+
 impl Config {
     
     pub fn get_keywords(self) -> HashMap<String, String> {
@@ -25,7 +27,7 @@ impl Config {
                 Value::String(s) => s.clone(),
                 _ => value.to_string(),
             };
-            keywords.insert(format!("${}",key), value_str);
+            keywords.insert("{{$%s}}".replace("%s",&key),value_str);
         }
 
         keywords

@@ -4,7 +4,10 @@ use std::{
     path::Path,
     env, fs, io
 };
-use crate::config::Config;
+use crate::config::{
+    Config,
+    CONFIG_PATH,
+};
 use toml;
 
 fn create_dirs(dir: &str) {
@@ -23,14 +26,14 @@ fn write_content(path: &str, content: String) {
 
 fn init_keywords() -> HashMap<String, String> {
     let mut keywords = HashMap::new();
-    keywords.insert("$HOME".to_string(), env::var("HOME").unwrap());
-    keywords.insert("$PROJECTNAME".to_string(), "".to_string());
-    keywords.insert("$CURRENTDIR".to_string(), env::current_dir().unwrap()
+    keywords.insert("{{$HOME}}".to_string(), env::var("HOME").unwrap());
+    keywords.insert("{{$PROJECTNAME}}".to_string(), "".to_string());
+    keywords.insert("{{$CURRENTDIR}}".to_string(), env::current_dir().unwrap()
                     .file_name().unwrap()
                     .to_str().unwrap()
                     .to_string());
     let other_keywords = Config{
-        path: format!("{}/.config/idkmng/config.toml",keywords["$HOME"]),
+        path: CONFIG_PATH.replace("{{$HOME}}",&keywords["{{$HOME}}"]),
     }.get_keywords(); // Special keywords
     keywords.extend(other_keywords);
     keywords
@@ -90,7 +93,7 @@ impl Template {
     }
 
     pub fn generate(){
-        let dest = format!("{}.toml", init_keywords()["$CURRENTDIR"]);
+        let dest = format!("{}.toml", init_keywords()["{{$CURRENTDIR}}"]);
         println!("Creating Template: {}",&dest);
         let mut files: Vec<File> = Vec::new();
         list_files(Path::new("./")).iter().for_each(|file|{
@@ -130,12 +133,12 @@ impl Template {
         let files = sample.files;
         let mut project = String::new();
         files.into_iter().for_each(|file| {
-            if file.path.contains("$PROJECTNAME") || file.content.contains("$PROJECTNAME") {
+            if file.path.contains("{{$PROJECTNAME}}") || file.content.contains("{{$PROJECTNAME}}") {
                 if project.len() == 0 {
                     println!("Project name: ");
                     io::stdin().read_line(&mut project).unwrap();
                     project = project.trim().to_string();
-                    keywords.insert("$PROJECTNAME".to_string(), project.to_owned());
+                    keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
                 }
             }
 
@@ -147,12 +150,12 @@ impl Template {
                     keywords.to_owned(),
                     file.path
                         .replace(&dir[dir.len() - 1], "")
-                        .replace("~",&keywords["$HOME"]),
+                        .replace("~",&keywords["{{$HOME}}"]),
                 ));
             }
 
             write_content(
-                &path.replace("~",&keywords["$HOME"]),
+                &path.replace("~",&keywords["{{$HOME}}"]),
                 replace_keywords(keywords.to_owned(),file.content),
             )
         });
@@ -176,7 +179,7 @@ impl Template {
             //IGNORE
         } else {
             template = "~/.config/idkmng/templates/".replace(
-                "~" , &keywords["$HOME"]
+                "~" , &keywords["{{$HOME}}"]
                 ) + &template
         }
         template
