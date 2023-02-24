@@ -66,7 +66,7 @@ content=""" # File content
 so it's super easy to write and you can get this structure using `idkmng new`.
 `path` represents the path of the file you want to save content into, and `content` represents the content of the file,
 and so on,you can have as much files as you want,
-`path` and `content` can have `$PROJECTNAME`, `$CURRENTDIR` `$HOME` for as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `$CURRENTDIR` is provided!,same with `$HOME`.
+`path` and `content` can have `{{$PROJECTNAME}}`, `{{$CURRENTDIR}}` `{{$HOME}}` for as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `{{$CURRENTDIR}}` is provided!,same with `{{$HOME}}`.
 
 ### Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
