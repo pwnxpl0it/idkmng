@@ -2,12 +2,9 @@ use serde::{Deserialize,Serialize};
 use std::{
     collections::HashMap,
     path::Path,
-    env, fs, io
+    fs, io
 };
-use crate::config::{
-    Config,
-    CONFIG_PATH,
-};
+use crate::keywords::Keywords;
 use toml;
 
 fn create_dirs(dir: &str) {
@@ -22,28 +19,6 @@ fn write_content(path: &str, content: String) {
         Ok(_) => println!("file written: {}", path),
         Err(e) => eprintln!("Error writing file: {} {}", path, e),
     }
-}
-
-fn init_keywords() -> HashMap<String, String> {
-    let mut keywords = HashMap::new();
-    keywords.insert("{{$HOME}}".to_string(), env::var("HOME").unwrap());
-    keywords.insert("{{$PROJECTNAME}}".to_string(), "".to_string());
-    keywords.insert("{{$CURRENTDIR}}".to_string(), env::current_dir().unwrap()
-                    .file_name().unwrap()
-                    .to_str().unwrap()
-                    .to_string());
-    let other_keywords = Config{
-        path: CONFIG_PATH.replace("{{$HOME}}",&keywords["{{$HOME}}"]),
-    }.get_keywords(); // Special keywords
-    keywords.extend(other_keywords);
-    keywords
-}
-
-fn replace_keywords(keywords: HashMap<String, String>, mut data: String) -> String {
-    for (key, value) in keywords.iter() {
-        data = data.replace(key, value);
-    }
-    data
 }
 
 fn list_files(dir: &Path) -> Vec<String> {
@@ -93,7 +68,7 @@ impl Template {
     }
 
     pub fn generate(){
-        let dest = format!("{}.toml", init_keywords()["{{$CURRENTDIR}}"]);
+        let dest = format!("{}.toml", Keywords::init()["{{$CURRENTDIR}}"]);
         println!("Creating Template: {}",&dest);
         let mut files: Vec<File> = Vec::new();
         list_files(Path::new("./")).iter().for_each(|file|{
@@ -122,7 +97,7 @@ impl Template {
     }
 
     pub fn extract(filename: String) {
-        let mut keywords = init_keywords();
+        let mut keywords = Keywords::init();
         let template = Self::validate_template(filename, keywords.to_owned());
 
         println!("Using Template: {}", &template);
@@ -143,10 +118,10 @@ impl Template {
             }
 
             let dir = file.path.split("/").collect::<Vec<_>>();
-            let path = replace_keywords(keywords.to_owned(), file.path.to_owned());
+            let path = Keywords::replace_keywords(keywords.to_owned(), file.path.to_owned());
 
             if dir.len() > 1 {
-                create_dirs(&replace_keywords(
+                create_dirs(&Keywords::replace_keywords(
                     keywords.to_owned(),
                     file.path
                         .replace(&dir[dir.len() - 1], "")
@@ -156,7 +131,7 @@ impl Template {
 
             write_content(
                 &path.replace("~",&keywords["{{$HOME}}"]),
-                replace_keywords(keywords.to_owned(),file.content),
+                Keywords::replace_keywords(keywords.to_owned(),file.content),
             )
         });
     }
