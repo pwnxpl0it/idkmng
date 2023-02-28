@@ -1,12 +1,14 @@
 use std::fs;
 use std::collections::HashMap;
 use toml::Value;
+use crate::keywords::Keywords;
 
 pub struct Config {
     pub path: String,
 } 
 
 pub const CONFIG_PATH: &str = "{{$HOME}}/.config/idkmng/config.toml";
+pub const KEYWORDS_FORMAT: &str = "{{$%s}}";
 
 impl Config {
     
@@ -27,7 +29,9 @@ impl Config {
                 Value::String(s) => s.clone(),
                 _ => value.to_string(),
             };
-            keywords.insert("{{$%s}}".replace("%s",&key),value_str);
+            keywords.insert(
+                Keywords::new(key.to_string())
+                ,value_str);
         }
 
         keywords
