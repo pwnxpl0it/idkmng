@@ -41,8 +41,8 @@ just run the following command!
 $ idkmng new
 ```
 enter template name and you should have one, it will go inside `~/.config/idkmng/templates/TEMPLATENAME.toml`
-also you can edit that Template too to create you own template that creates a template 🎉,
-note that the template `info` section can be totally ignored, straight to the point where you only create files and directories you want!
+also you can edit that Template too to create you own template that creates a template 🎉,<br>
+note that the template `info` section can be totally ignored, straight to the point where you only create files and directories you want!<br>
 The template structure is like the following:
 ```toml
 [info] # Not required
@@ -64,9 +64,19 @@ content=""" # File content
 """
 ```
 so it's super easy to write and you can get this structure using `idkmng new`.
-`path` represents the path of the file you want to save content into, and `content` represents the content of the file,
-and so on,you can have as much files as you want,
-`path` and `content` can have `{{$PROJECTNAME}}`, `{{$CURRENTDIR}}` `{{$HOME}}` for as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `{{$CURRENTDIR}}` is provided!,same with `{{$HOME}}`.
+`path` represents the path of the file you want to save content into, and `content` represents the content of the file,<br>
+and so on,you can have as much files as you want,<br>
+`path` and `content` can have `{{$PROJECTNAME}}`, `{{$CURRENTDIR}}` `{{$HOME}}` for as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `{{$CURRENTDIR}}` is provided!,same with `{{$HOME}}`.<br>
+
+💡 you can have keywords/placeholder that asks for user input to take as a value by using the following format `{{$%s:f}}` this already works with `{{$PROJECTNAME}}`. but you can have your own...<br>
+Example: 
+```toml
+# --snip
+content="""
+{{$TEST:read}}
+"""
+```
+note that `read` is the function that reads user input.
 
 ### Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
