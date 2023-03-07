@@ -5,6 +5,9 @@ use std::{
     fs, io
 };
 use crate::keywords::Keywords;
+use crate::config::KEYWORDS_REGEX;
+use crate::funcs::*;
+use regex::Regex;
 use toml;
 
 fn create_dirs(dir: &str) {
@@ -99,6 +102,7 @@ impl Template {
     pub fn extract(filename: String) {
         let mut keywords = Keywords::init();
         let template = Self::validate_template(filename, keywords.to_owned());
+        let re = Regex::new(KEYWORDS_REGEX).unwrap();
 
         println!("Using Template: {}", &template);
 
@@ -106,8 +110,18 @@ impl Template {
         Self::show_info(&sample);
 
         let files = sample.files;
-        let mut project = String::new();
+        let mut project = String::from("");
+        let mut value= String::from("");
         files.into_iter().for_each(|file| {
+            for key in re.captures_iter(&file.content){
+                if let Some(key) = key.get(0){
+                    if key.as_str().contains(":read") && value.len() == 0{ //TODO: use match later if added more functions
+                        value = read(key.as_str().to_string());
+                        keywords.insert(key.as_str().to_string(),value.to_owned());
+                    }
+                }
+            } 
+
             if file.path.contains("{{$PROJECTNAME}}") || file.content.contains("{{$PROJECTNAME}}") {
                 if project.len() == 0 {
                     println!("Project name: ");

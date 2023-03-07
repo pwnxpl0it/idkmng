@@ -2,6 +2,7 @@ mod args;
 mod utils;
 mod config;
 mod keywords;
+mod funcs;
 use utils::*;
 use args::Cli;
 

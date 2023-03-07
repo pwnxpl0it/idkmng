@@ -1,18 +1,26 @@
-use crate::config::{Config,CONFIG_PATH,KEYWORDS_FORMAT};
+use crate::config::{
+    Config,
+    CONFIG_PATH,
+    KEYWORDS_FORMAT
+};
 use std::{env,collections::HashMap};
 
 pub struct Keywords {}
 
 impl Keywords {
-    pub fn new(name: String) -> String{
-        KEYWORDS_FORMAT.to_string().replace("%s",&name)
+    pub fn new(name: String,function: String) -> String{
+        if !function.is_empty(){
+            KEYWORDS_FORMAT.to_string().replace("%s",&name).replace("f",&function)
+        }else{
+            KEYWORDS_FORMAT.to_string().replace("%s",&name).replace(":f","")
+        }
     }
 
     pub fn init() -> HashMap<String, String> {
         let mut keywords = HashMap::new();
-        keywords.insert(Self::new(String::from("HOME")) , env::var("HOME").unwrap());
-        keywords.insert(Self::new(String::from("PROJECTNAME")), "".to_string());
-        keywords.insert(Self::new(String::from("CURRENTDIR")),env::current_dir().unwrap()
+        keywords.insert(Self::new(String::from("HOME"),"".to_string()), env::var("HOME").unwrap());
+        keywords.insert(Self::new(String::from("PROJECTNAME"),"".to_string()), "".to_string());
+        keywords.insert(Self::new(String::from("CURRENTDIR"),"".to_string()),env::current_dir().unwrap()
                         .file_name().unwrap()
                         .to_str().unwrap()
                         .to_string());

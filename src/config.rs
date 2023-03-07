@@ -8,7 +8,8 @@ pub struct Config {
 } 
 
 pub const CONFIG_PATH: &str = "{{$HOME}}/.config/idkmng/config.toml";
-pub const KEYWORDS_FORMAT: &str = "{{$%s}}";
+pub const KEYWORDS_FORMAT: &str = "{{$%s:f}}";
+pub const KEYWORDS_REGEX: &str = r"\{\{\$[^\s}]+(:[^\s}]+)?\}\}";
 
 impl Config {
     
@@ -30,7 +31,7 @@ impl Config {
                 _ => value.to_string(),
             };
             keywords.insert(
-                Keywords::new(key.to_string())
+                Keywords::new(key.to_string(),"".to_string())
                 ,value_str);
         }
 
