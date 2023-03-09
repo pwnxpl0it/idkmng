@@ -116,8 +116,8 @@ impl Template {
                 if let Some(key) = key.get(0){
                     let mut value= String::from("");
                     let keyword_ = key.as_str().to_string();
-                    if keyword_.contains(":read") && value.len() == 0{ //TODO: use match later if added more functions
-                        if !keywords.contains_key(&keyword_){
+                    if !keywords.contains_key(&keyword_){
+                        if keyword_.contains(":read") && value.len() == 0{ //TODO: use match later if added more functions
                             value = read(keyword_.to_owned());
                             keywords.insert(keyword_,value.to_owned());
                         }
