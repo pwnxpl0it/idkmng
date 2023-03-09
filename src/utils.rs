@@ -111,13 +111,16 @@ impl Template {
 
         let files = sample.files;
         let mut project = String::from("");
-        let mut value= String::from("");
         files.into_iter().for_each(|file| {
             for key in re.captures_iter(&file.content){
                 if let Some(key) = key.get(0){
-                    if key.as_str().contains(":read") && value.len() == 0{ //TODO: use match later if added more functions
-                        value = read(key.as_str().to_string());
-                        keywords.insert(key.as_str().to_string(),value.to_owned());
+                    let mut value= String::from("");
+                    let keyword_ = key.as_str().to_string();
+                    if keyword_.contains(":read") && value.len() == 0{ //TODO: use match later if added more functions
+                        if !keywords.contains_key(&keyword_){
+                            value = read(keyword_.to_owned());
+                            keywords.insert(keyword_,value.to_owned());
+                        }
                     }
                 }
             } 
