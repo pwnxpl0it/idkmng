@@ -114,12 +114,16 @@ impl Template {
         files.into_iter().for_each(|file| {
             for key in re.captures_iter(&file.content){
                 if let Some(key) = key.get(0){
-                    let mut value= String::from("");
                     let keyword_ = key.as_str().to_string();
                     if !keywords.contains_key(&keyword_){
-                        if keyword_.contains(":read") && value.len() == 0{ //TODO: use match later if added more functions
-                            value = read(keyword_.to_owned());
-                            keywords.insert(keyword_,value.to_owned());
+                        let func = keyword_.as_str().split(":").collect::<Vec<_>>()[1].replace("}}","");
+                        match func.as_str(){
+                            "read" => {
+                                let value = read(keyword_.to_owned());
+                                keywords.insert(keyword_,value.to_owned());
+                            },
+                            _ => {eprintln!("error: {} is not a valid function",func)}
+
                         }
                     }
                 }
