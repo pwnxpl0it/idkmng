@@ -6,6 +6,7 @@ use std::{
 };
 use crate::keywords::Keywords;
 use crate::config::KEYWORDS_REGEX;
+use crate::config::TEMPLATES_PATH;
 use crate::funcs::*;
 use regex::Regex;
 use toml;
@@ -171,13 +172,14 @@ impl Template {
             template += ".toml"
         }
 
-        if template.contains("/") {
+        if fs::read_to_string(&template).is_ok(){
             //IGNORE
-        } else {
-            template = "~/.config/idkmng/templates/".replace(
-                "~" , &keywords["{{$HOME}}"]
-                ) + &template
+        }else{
+            template = TEMPLATES_PATH.replace(
+                "{{$HOME}}",&keywords["{{$HOME}}"]
+                ).to_string() + &template
         }
+
         template
     }
 

@@ -8,6 +8,7 @@ pub struct Config {
 } 
 
 pub const CONFIG_PATH: &str = "{{$HOME}}/.config/idkmng/config.toml";
+pub const TEMPLATES_PATH: &str = "{{$HOME}}/.config/idkmng/templates/";
 pub const KEYWORDS_FORMAT: &str = "{{$%s:f}}";
 pub const KEYWORDS_REGEX: &str = r"\{\{\$[^\s}]+(:[^\s}]+)?\}\}";
 
