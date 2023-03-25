@@ -4,6 +4,7 @@ mod config;
 mod keywords;
 mod funcs;
 use utils::*;
+use colored::*;
 use args::Cli;
 
 fn main() {
@@ -14,6 +15,6 @@ fn main() {
     }else if let Some(filename) = args.value_of("template"){
         Template::extract(filename.to_string());
     }else{
-        println!("No args specified please use --help");
+        println!("{} {}","No args specified please use".yellow(),"--help".bold().green());
     }
 }
