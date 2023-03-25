@@ -9,19 +9,20 @@ use crate::config::KEYWORDS_REGEX;
 use crate::config::TEMPLATES_PATH;
 use crate::funcs::*;
 use regex::Regex;
+use colored::*;
 use toml;
 
 fn create_dirs(dir: &str) {
     match fs::create_dir_all(dir) {
-        Ok(_) => println!("Target Directory: {}", dir),
-        Err(e) => eprintln!("{}", e),
+        Ok(_) => println!("{}: {}", "creating directory".blue(),dir.bold().green()),
+        Err(e) => eprintln!("{}: {}", "error".red(),e),
     }
 }
 
 fn write_content(path: &str, content: String) {
     match fs::write(path, content) {
-        Ok(_) => println!("file written: {}", path),
-        Err(e) => eprintln!("Error writing file: {} {}", path, e),
+        Ok(_) => println!("{}: {}","file written".blue() ,path.bold().green()),
+        Err(e) => eprintln!("{}: {} {}","error".red(), path, e),
     }
 }
 
@@ -73,7 +74,7 @@ impl Template {
 
     pub fn generate(){
         let dest = format!("{}.toml", Keywords::init()["{{$CURRENTDIR}}"]);
-        println!("Creating Template: {}",&dest);
+        println!("{}: {}","Creating Template".bold().green(),&dest.yellow());
         let mut files: Vec<File> = Vec::new();
         list_files(Path::new("./")).iter().for_each(|file|{
             if !file.contains(".git"){ //TODO: Add more to ignore list maybe adding a --ignore flag will be good 
@@ -81,7 +82,7 @@ impl Template {
                     file.to_string().replace("./",""),{
                     match fs::read_to_string(file){
                         Ok(content) => content,
-                        Err(e) => panic!("{}:{}",file,e),
+                        Err(e) => panic!("{}:{}",file.red(),e),
                     }}
                 ); 
                 files.push(file);
@@ -105,7 +106,7 @@ impl Template {
         let template = Self::validate_template(filename, keywords.to_owned());
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
 
-        println!("Using Template: {}", &template);
+        println!("{}: {}","Using Template".blue(),&template.magenta());
 
         let sample = Self::parse_template(&template);
         Self::show_info(&sample);
@@ -123,7 +124,7 @@ impl Template {
                                 let value = read(keyword_.to_owned());
                                 keywords.insert(keyword_,value.to_owned());
                             },
-                            _ => {eprintln!("error: {} is not a valid function",func)}
+                            _ => {eprintln!("\n{}: '{}' is not a valid function","error".red(),func.yellow())}
 
                         }
                     }
@@ -189,13 +190,13 @@ impl Template {
                 "{}",
                 format!(
                     "
-Name: {} 
-Description: {}
-Author: {}
+{}: {} 
+{}: {}
+{}: {}
     ",
-                    information.name.as_ref().unwrap(),
-                    information.description.as_ref().unwrap(),
-                    information.author.as_ref().unwrap()
+                    "Name".yellow(),information.name.as_ref().unwrap().bold().green(),
+                    "Description".yellow(),information.description.as_ref().unwrap().bold().green(),
+                    "Author".yellow(),information.author.as_ref().unwrap().bold().green()
                 )
             ),
             None => {}
