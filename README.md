@@ -52,13 +52,13 @@ author = ""
 
 [[files]] # file1 
 path="/path/to/file1"
-content=""" # File content
+content="""
 
 """
 
 [[files]] # file2
 path="/path/to/file2"
-content=""" # File content
+content="""
 
 #etc...
 """
@@ -66,9 +66,16 @@ content=""" # File content
 so it's super easy to write and you can get this structure using `idkmng new`.
 `path` represents the path of the file you want to save content into, and `content` represents the content of the file,<br>
 and so on,you can have as much files as you want,<br>
-`path` and `content` can have `{{$PROJECTNAME}}`, `{{$CURRENTDIR}}` `{{$HOME}}` for as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `{{$CURRENTDIR}}` is provided!,same with `{{$HOME}}`.<br>
+`path` and `content` can have `{{$PROJECTNAME}}`, `{{$CURRENTDIR}}` `{{$HOME}}` as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `{{$CURRENTDIR}}` is provided!,same with `{{$HOME}}`.<br>
+Here is a table of default values for idkmng:
 
-💡 you can have keywords/placeholder that asks for user input to take as a value by using the following format `{{$%s:f}}` this already works with `{{$PROJECTNAME}}`. but you can have your own...<br>
+| Keyword/placeholder   | Value     | Example          |
+|--------------- | ---------------  | ---------------  |
+| PROJECTNAME   |                   |                  |
+| CURRENTDIR    | Current directory | /foo/bar => `bar`|
+| HOME          | Home directory    | `/home/user/`    |
+
+you can have keywords/placeholder that asks for user input to take as a value by using the following format `{{$%s:f}}` this already works with `{{$PROJECTNAME}}`. but you can have your own...<br>
 Example: 
 ```toml
 # --snip
@@ -77,6 +84,13 @@ content="""
 """
 ```
 note that `read` is the function that reads user input.
+
+Functions supported by idkmng:
+
+| Function   | Description    | Example  |
+|--------------- | --------------- | ---------------  |
+| read   | Asks for user input to replace placeholder with   | `${{TEST:read}}` |
+
 
 ### Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
