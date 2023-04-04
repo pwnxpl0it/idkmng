@@ -1,6 +1,6 @@
 [package]
 name = "idkmng"
-version = "0.1.0"
+version = "1.4.2"
 edition = "2021"
 repository = "https://github.com/0xr00t3d/idkmng"
 authors = ["Mohamed Tarek @0xr00t3d"]
