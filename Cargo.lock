@@ -107,7 +107,7 @@ dependencies = [
 
 [[package]]
 name = "idkmng"
-version = "0.1.0"
+version = "1.4.2"
 dependencies = [
  "clap",
  "colored",
