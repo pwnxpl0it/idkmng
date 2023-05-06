@@ -99,7 +99,8 @@ Functions supported by idkmng:
 
 | Function   | Description    | Example  |
 |--------------- | --------------- | ---------------  |
-| read   | Asks for user input to replace placeholder with   | `${{TEST:read}}` |
+| read   | Asks for user input to replace placeholder with   | `{{$TEST:read}}` |
+| env    | Replace with value from environment variables     | `{{$PATH:env}}` |
 
 also keep in mind that once a function gets called on a keyword you can use `${{TEST:read}}` or `{{$TEST}}` both are going to work and value will be replaced for both of them.
 

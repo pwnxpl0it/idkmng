@@ -127,6 +127,10 @@ impl Template {
                                 keywords.insert(keyword_,value.to_owned());
                                 keywords.insert(keyword_name + "}}",value.to_owned());
                             },
+                            "env" => {
+                                let value = env(keyword_name.to_owned());
+                                keywords.insert(keyword_,value.to_owned());
+                            },
                             _ => {eprintln!("\n{}: '{}' is not a valid function","error".red(),func.yellow())}
 
                         }
