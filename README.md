@@ -1,5 +1,7 @@
-# idkmng
-A TOML based project initializer.
+# idkmng: A TOML based project initializer.
+
+idkmng is a template-based command-line tool that helps initialize projects with the necessary files and syntax. Whether you're working on a web extension or a Neovim plugin, idkmng can set up your project with a single command.
+
 
 Template-based, with easy [TOML](https://toml.io/en/) support!
 
@@ -28,10 +30,18 @@ If you have Rust 🦀 🚀 installed on your machine run the following command:
 ```sh
 $ cargo install --git https://www.github.com/0xr00t3d/idkmng
 ```
-<!--if not I don't know how you are still alive jk-->
+
 <!-- TODO: Add templates repo-->
-<!-- TODO: Add releases-->
-now you should be able to run `Idkmng` in your terminal!
+
+Alternatively you can go to [Releases](https://github.com/0xr00t3d/idkmng/releases) and download the binary
+
+```console
+$ sudo tar -xzf idkmng-<RELEASE>.tar.gz -C /usr/local/bin
+```
+
+Replace <RELEASE> with the version number or tag of the release you want to install.
+
+now you should be able to run `idkmng` in your terminal!
 
 ## Creating a template 📜
 There is a template for creating a template! 
@@ -107,5 +117,5 @@ GITHUB = "https://github.com/0xr00t3d"
 etc .....
 ```
 
-## Neovim plugin(idkmng.nvim)
+## 👾 Neovim plugin (idkmng.nvim) 
 I wrote a neovim plugin that makes it a way easier, Check it out [idkmng.nvim](https://www.github.com/0xr00t3d/idkmng.nvim).
