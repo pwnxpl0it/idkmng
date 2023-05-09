@@ -102,7 +102,7 @@ Functions supported by idkmng:
 | read   | Asks for user input to replace placeholder with   | `{{$TEST:read}}` |
 | env    | Replace with value from environment variables     | `{{$PATH:env}}` |
 
-also keep in mind that once a function gets called on a keyword you can use `${{TEST:read}}` or `{{$TEST}}` both are going to work and value will be replaced for both of them.
+also keep in mind that once a function gets called on a keyword you can use `{{$TEST:read}}` or `{{$TEST}}` both are going to work and value will be replaced for both of them.
 
 ### Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
