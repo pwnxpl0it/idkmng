@@ -10,7 +10,7 @@ pub struct Keywords {}
 impl Keywords {
     pub fn new(name: String,function: String) -> String{
         if !function.is_empty(){
-            KEYWORDS_FORMAT.to_string().replace("%s",&name).replace("f",&function)
+            KEYWORDS_FORMAT.to_string().replace("%s",&name).replace('f',&function)
         }else{
             KEYWORDS_FORMAT.to_string().replace("%s",&name).replace(":f","")
         }

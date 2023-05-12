@@ -10,7 +10,7 @@ use args::Cli;
 fn main() {
     let args = Cli::parse();
 
-    if let Some(_) = args.subcommand_matches("init"){
+    if args.subcommand_matches("init").is_some(){
         Template::generate();
     }else if let Some(filename) = args.value_of("template"){
         Template::extract(filename.to_string());

@@ -8,9 +8,5 @@ pub fn read(name: String) -> String {
 }
 
 pub fn env(name: String) -> String {
-    let from_env = env::var(
-            name
-        ).unwrap();
-
-    from_env
+    env::var(name).unwrap()
 }

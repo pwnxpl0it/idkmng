@@ -10,7 +10,6 @@ use crate::config::TEMPLATES_PATH;
 use crate::funcs::*;
 use regex::Regex;
 use colored::*;
-use toml;
 
 fn create_dirs(dir: &str) {
     match fs::create_dir_all(dir) {
@@ -73,7 +72,7 @@ impl File {
 impl Template {
 
     fn new(info_: Information,files_:Vec<File>) -> Self{
-        return Self{info: Some(info_),files: files_}
+        Self{info: Some(info_),files: files_}
     }
 
     pub fn generate(){
@@ -122,7 +121,7 @@ impl Template {
                 if let Some(key) = key.get(0){
                     let keyword_ = key.as_str().to_string();
                     if !keywords.contains_key(&keyword_){
-                        let data = keyword_.as_str().split(":").collect::<Vec<_>>();
+                        let data = keyword_.as_str().split(':').collect::<Vec<_>>();
                         let keyword_name = data[0].replace("{{$","").replace("}}","");
                         let func = data[1].replace("}}","");
                         match func.as_str(){
@@ -143,7 +142,7 @@ impl Template {
             } 
 
             if file.path.contains("{{$PROJECTNAME}}") || file.content.contains("{{$PROJECTNAME}}") {
-                if project.len() == 0 {
+                if project.is_empty(){
                     println!("Project name: ");
                     io::stdin().read_line(&mut project).unwrap();
                     project = project.trim().to_string();
@@ -151,20 +150,20 @@ impl Template {
                 }
             }
 
-            let dir = file.path.split("/").collect::<Vec<_>>();
+            let dir = file.path.split('/').collect::<Vec<_>>();
             let path = Keywords::replace_keywords(keywords.to_owned(), file.path.to_owned());
 
             if dir.len() > 1 {
                 create_dirs(&Keywords::replace_keywords(
                     keywords.to_owned(),
                     file.path
-                        .replace(&dir[dir.len() - 1], "")
-                        .replace("~",&keywords["{{$HOME}}"]),
+                        .replace(dir[dir.len() - 1], "")
+                        .replace('~',&keywords["{{$HOME}}"]),
                 ));
             }
 
             write_content(
-                &path.replace("~",&keywords["{{$HOME}}"]),
+                &path.replace('~',&keywords["{{$HOME}}"]),
                 Keywords::replace_keywords(keywords.to_owned(),file.content),
             )
         });
@@ -172,7 +171,8 @@ impl Template {
 
     fn parse_template(template: &str) -> Self {
         let content = fs::read_to_string(template)
-            .expect(format!("Failed to Parse {}", template).as_str());
+                .unwrap_or_else(|_| panic!("Failed to Parse {}", template)
+            );
         toml::from_str(&content).unwrap()
     }
 
@@ -189,7 +189,7 @@ impl Template {
         }else{
             template = TEMPLATES_PATH.replace(
                 "{{$HOME}}",&keywords["{{$HOME}}"]
-                ).to_string() + &template
+                ) + &template
         }
 
         template
@@ -198,8 +198,6 @@ impl Template {
     fn show_info(template: &Self) {
         match &template.info {
             Some(information) => println!(
-                "{}",
-                format!(
                     "
 {}: {} 
 {}: {}
@@ -208,7 +206,6 @@ impl Template {
                     "Name".yellow(),information.name.as_ref().unwrap().bold().green(),
                     "Description".yellow(),information.description.as_ref().unwrap().bold().green(),
                     "Author".yellow(),information.author.as_ref().unwrap().bold().green()
-                )
             ),
             None => {}
         }
