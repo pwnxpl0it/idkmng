@@ -40,7 +40,7 @@ fn list_files(dir: &Path) -> Vec<String> {
     files
 }
 
-pub fn remove_fn_name(keyword: String,func_name: &str) -> String{
+pub fn remove_fn_name(keyword: String,func_name: String) -> String{
     keyword.replace(&format!(":{}",func_name),"")
 }
 
@@ -122,22 +122,22 @@ impl Template {
                     let keyword_ = key.as_str().to_string();
                     if !keywords.contains_key(&keyword_){
                         let data = keyword_.as_str().split(':').collect::<Vec<_>>();
+                        let mut value = String::from("");
                         if data.len() == 2 {
                             let keyword_name = data[0].replace("{{$","").replace("}}","");
                             let func = data[1].replace("}}","");
                             match func.as_str(){
                                 "read" => {
-                                    let value = read(keyword_name.to_owned());
-                                    keywords.insert(keyword_.to_owned(),value.to_owned());
-                                    keywords.insert(remove_fn_name(keyword_,"read"),value.to_owned());
+                                    value = read(keyword_name.to_owned());
                                 },
                                 "env" => {
-                                    let value = env(keyword_name.to_owned());
-                                    keywords.insert(keyword_,value.to_owned());
+                                    value = env(keyword_name.to_owned());
                                 },
                                 _ => {eprintln!("\n{}: '{}' is not a valid function","error".red(),func.yellow())}
 
                             }
+                            keywords.insert(keyword_.to_owned(),value.to_owned());
+                            keywords.insert(remove_fn_name(keyword_,func),value.to_owned());
                         }
                     }
                 }
