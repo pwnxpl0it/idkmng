@@ -1,12 +1,12 @@
 # idkmng: A TOML based project initializer.
 
-idkmng is a template-based command-line tool that helps initialize projects with the necessary files and syntax. Whether you're working on a web extension or a Neovim plugin, idkmng can set up your project with a single command.
+idkmng is a template-based command-line tool that helps to initialize projects with the necessary files and syntax.whatever you're working on, idkmng can set up your project with a single command.
 
 
 Template-based, with easy [TOML](https://toml.io/en/) support!
 
 ## Idea 🧠:
-In many cases you need to create a project that need some special files,for example a browser extension, your worktree will look like:
+In many cases you need to create a project that needs some special files,for example a browser extension, your worktree will look like:
 ```
 manifest.json
 Content.js
@@ -20,7 +20,7 @@ for example a web extension:
 $ idkmng browser_extension
 ```
 and 💥 your files are ready for your initial commit, How amazing is that ? 
-same for any other thing because it is template-based like: nvim plugins, browser extensions.
+same for any other thing because it is template-based.
 
 This gives you the ability to customize your projects initialization process as you want for example, you can have more than one template to create a browser extension but they are different in `manifest.json` or whatever.
 
@@ -73,7 +73,7 @@ content="""
 #etc...
 """
 ```
-so it's super easy to write and you can get this structure using `idkmng new`.
+so it's super easy to write and you can get this structure using <br> ```$ idkmng new```. <br>
 `path` represents the path of the file you want to save content into, and `content` represents the content of the file,<br>
 and so on,you can have as much files as you want,<br>
 `path` and `content` can have `{{$PROJECTNAME}}`, `{{$CURRENTDIR}}` `{{$HOME}}` as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `{{$CURRENTDIR}}` is provided!,same with `{{$HOME}}`.<br>
