@@ -1,7 +1,7 @@
-use std::{io,env};
+use std::{env, io};
 
 pub fn read(name: String) -> String {
-    println!("{}:",name);
+    println!("{}:", name);
     let mut input = String::from("");
     io::stdin().read_line(&mut input).unwrap();
     input.trim().to_string()
