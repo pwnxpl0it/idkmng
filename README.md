@@ -55,7 +55,7 @@ also you can edit that Template too to create you own template that creates a te
 note that the template `info` section can be totally ignored, straight to the point where you only create files and directories you want!<br>
 The template structure is like the following:
 ```toml
-[info] # Not required
+[info]
 name = ""
 description = ""
 author = ""
@@ -73,6 +73,10 @@ content="""
 #etc...
 """
 ```
+
+> [!TIP]
+> Info section is not required and can be ignored
+
 so it's super easy to write and you can get this structure using <br> ```$ idkmng new```. <br>
 `path` represents the path of the file you want to save content into, and `content` represents the content of the file,<br>
 and so on,you can have as much files as you want,<br>
