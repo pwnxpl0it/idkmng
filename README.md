@@ -28,12 +28,12 @@ This gives you the ability to customize your projects initialization process as 
 If you have Rust 🦀 🚀 installed on your machine run the following command:
 
 ```sh
-$ cargo install --git https://www.github.com/0xr00t3d/idkmng
+$ cargo install --git https://www.github.com/pwnxpl0it/idkmng
 ```
 
 <!-- TODO: Add templates repo-->
 
-Alternatively you can go to [Releases](https://github.com/0xr00t3d/idkmng/releases) and download the binary
+Alternatively you can go to [Releases](https://github.com/pwnxpl0it/idkmng/releases) and download the binary
 
 ```console
 $ sudo tar -xzf idkmng-<RELEASE>.tar.gz -C /usr/local/bin
@@ -113,10 +113,10 @@ Idkmng finds them stored in $HOME/.config/idkmng/config.toml
 ```toml
 [Keywords]
 AUTHOR = "Mohamed Tarek"
-USERNAME = "@0xr00t3d"
-GITHUB = "https://github.com/0xr00t3d"
+USERNAME = "@pwnxpl0it"
+GITHUB = "https://github.com/pwnxpl0it"
 etc .....
 ```
 
 ## 👾 Neovim plugin (idkmng.nvim) 
-I wrote a neovim plugin that makes it a way easier, Check it out [idkmng.nvim](https://www.github.com/0xr00t3d/idkmng.nvim).
+I wrote a neovim plugin that makes it a way easier, Check it out [idkmng.nvim](https://www.github.com/pwnxpl0it/idkmng.nvim).

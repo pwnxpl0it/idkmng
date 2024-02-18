@@ -7,7 +7,7 @@ impl Cli {
         App::new("idkmng")
             .about("TOML based project initializer")
             .version("0.1")
-            .author("Mohamed Tarek @0xr00t3d")
+            .author("Mohamed Tarek @pwnxpl0it")
             .arg(
                 Arg::with_name("template")
                     .help("Template used to generate files")

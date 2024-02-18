@@ -2,8 +2,8 @@
 name = "idkmng"
 version = "1.4.2"
 edition = "2021"
-repository = "https://github.com/0xr00t3d/idkmng"
-authors = ["Mohamed Tarek @0xr00t3d"]
+repository = "https://github.com/pwnxpl0it/idkmng"
+authors = ["Mohamed Tarek @pwnxpl0it"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
