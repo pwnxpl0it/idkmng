@@ -1,5 +1,6 @@
 use crate::config::{Config, CONFIG_PATH, KEYWORDS_FORMAT};
 use std::{collections::HashMap, env};
+use chrono::Datelike;
 
 pub struct Keywords {}
 
@@ -38,6 +39,37 @@ impl Keywords {
                 .unwrap()
                 .to_string(),
         );
+
+        keywords.insert(
+            Self::new(String::from("NOW_UTC"),"".to_string()),
+            chrono::Utc::now().to_string()
+        );
+
+        keywords.insert(
+            Self::new(String::from("NOW"),"".to_string()),
+            chrono::Local::now().to_string()
+        );
+
+        keywords.insert(
+            Self::new(String::from("YYYY"),"".to_string()),
+            chrono::Local::now().year().to_string()
+        );
+
+        keywords.insert(
+            Self::new(String::from("YY"),"".to_string()),
+            chrono::Local::now().format("%y").to_string()
+        );
+
+        keywords.insert(
+            Self::new(String::from("MM"),"".to_string()),
+            chrono::Local::now().month().to_string()
+        );
+
+        keywords.insert(
+            Self::new(String::from("DD"),"".to_string()),
+            chrono::Local::now().day().to_string()
+        );
+
         let other_keywords = Config {
             path: CONFIG_PATH.replace("{{$HOME}}", &keywords["{{$HOME}}"]),
         }

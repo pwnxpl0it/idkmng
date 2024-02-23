@@ -81,13 +81,19 @@ so it's super easy to write and you can get this structure using <br> ```$ idkmn
 `path` represents the path of the file you want to save content into, and `content` represents the content of the file,<br>
 and so on,you can have as much files as you want,<br>
 `path` and `content` can have `{{$PROJECTNAME}}`, `{{$CURRENTDIR}}` `{{$HOME}}` as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `{{$CURRENTDIR}}` is provided!,same with `{{$HOME}}`.<br>
-Here is a table of default values for idkmng:
+Here is a table of defualt keyword for idkmng:
 
 | Keyword/placeholder   | Value     | Example          |
 |--------------- | ---------------  | ---------------  |
 | PROJECTNAME   |                   |                  |
 | CURRENTDIR    | Current directory | /foo/bar => `bar`|
 | HOME          | Home directory    | `/home/user/`    |
+| YYYY    | Current Year in YYYY format| 2024    |
+| YY | Current Year in YY format| 24    |
+| MM | Current Month | 2 |
+| DD | Current Day | 24 |
+| NOW | Current date and time | `2024-02-23 22:22:38.151417626 +00:00` |
+| NOW_UTC | Current date and time in UTC | `2024-02-23 22:21:17.897444668 UTC` |
 
 you can have keywords/placeholder that asks for user input to take as a value by using the following format `{{$%s:f}}` this already works with `{{$PROJECTNAME}}`. but you can have your own...<br>
 Example: 
