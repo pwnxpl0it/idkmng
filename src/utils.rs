@@ -40,6 +40,40 @@ pub fn remove_fn_name(keyword: String, func_name: String) -> String {
     keyword.replace(&format!(":{}", func_name), "")
 }
 
+fn find_and_exec_fns(txt: String, mut keywords: HashMap<String, String>, re: Regex) -> HashMap<String, String>{
+    for key in re.captures_iter(&txt) {
+        if let Some(key) = key.get(0) {
+            let keyword_ = key.as_str().to_string();
+            if !keywords.contains_key(&keyword_) {
+                let data = keyword_.as_str().split(':').collect::<Vec<_>>();
+                let mut value = String::from("");
+                if data.len() == 2 {
+                    let keyword_name = data[0].replace("{{$", "").replace("}}", "");
+                    let func = data[1].replace("}}", "");
+                    match func.as_str() {
+                        "read" => {
+                            value = read(keyword_name.to_owned());
+                        }
+                        "env" => {
+                            value = env(keyword_name.to_owned());
+                        }
+                        _ => {
+                            eprintln!(
+                                "\n{}: '{}' is not a valid function",
+                                "error".red(),
+                                func.yellow()
+                            )
+                        }
+                    }
+                    keywords.insert(keyword_.to_owned(), value.to_owned());
+                    keywords.insert(remove_fn_name(keyword_, func), value.to_owned());
+                }
+            }
+        }
+    }
+    keywords
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Template {
     pub info: Option<Information>,
@@ -120,36 +154,9 @@ impl Template {
         let files = sample.files;
         let mut project = String::from("");
         files.into_iter().for_each(|file| {
-            for key in re.captures_iter(&file.content) {
-                if let Some(key) = key.get(0) {
-                    let keyword_ = key.as_str().to_string();
-                    if !keywords.contains_key(&keyword_) {
-                        let data = keyword_.as_str().split(':').collect::<Vec<_>>();
-                        let mut value = String::from("");
-                        if data.len() == 2 {
-                            let keyword_name = data[0].replace("{{$", "").replace("}}", "");
-                            let func = data[1].replace("}}", "");
-                            match func.as_str() {
-                                "read" => {
-                                    value = read(keyword_name.to_owned());
-                                }
-                                "env" => {
-                                    value = env(keyword_name.to_owned());
-                                }
-                                _ => {
-                                    eprintln!(
-                                        "\n{}: '{}' is not a valid function",
-                                        "error".red(),
-                                        func.yellow()
-                                    )
-                                }
-                            }
-                            keywords.insert(keyword_.to_owned(), value.to_owned());
-                            keywords.insert(remove_fn_name(keyword_, func), value.to_owned());
-                        }
-                    }
-                }
-            }
+            //TODO: Instead of calling this function twice, I should extend the function to handle content and path
+            keywords = find_and_exec_fns(file.content.clone(),keywords.clone(),re.clone());
+            keywords = find_and_exec_fns(file.path.clone(),keywords.clone(),re.clone());
 
             if file.path.contains("{{$PROJECTNAME}}") || file.content.contains("{{$PROJECTNAME}}") {
                 if project.is_empty() {
