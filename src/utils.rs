@@ -40,7 +40,11 @@ pub fn remove_fn_name(keyword: String, func_name: String) -> String {
     keyword.replace(&format!(":{}", func_name), "")
 }
 
-fn find_and_exec_fns(txt: String, mut keywords: HashMap<String, String>, re: Regex) -> HashMap<String, String>{
+fn find_and_exec_fns(
+    txt: String,
+    mut keywords: HashMap<String, String>,
+    re: Regex,
+) -> HashMap<String, String> {
     for key in re.captures_iter(&txt) {
         if let Some(key) = key.get(0) {
             let keyword_ = key.as_str().to_string();
@@ -155,16 +159,16 @@ impl Template {
         let mut project = String::from("");
         files.into_iter().for_each(|file| {
             //TODO: Instead of calling this function twice, I should extend the function to handle content and path
-            keywords = find_and_exec_fns(file.content.clone(),keywords.clone(),re.clone());
-            keywords = find_and_exec_fns(file.path.clone(),keywords.clone(),re.clone());
+            keywords = find_and_exec_fns(file.content.clone(), keywords.clone(), re.clone());
+            keywords = find_and_exec_fns(file.path.clone(), keywords.clone(), re.clone());
 
-            if file.path.contains("{{$PROJECTNAME}}") || file.content.contains("{{$PROJECTNAME}}") {
-                if project.is_empty() {
-                    println!("Project name: ");
-                    io::stdin().read_line(&mut project).unwrap();
-                    project = project.trim().to_string();
-                    keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
-                }
+            if file.path.contains("{{$PROJECTNAME}}")
+                || file.content.contains("{{$PROJECTNAME}}") && project.is_empty()
+            {
+                println!("Project name: ");
+                io::stdin().read_line(&mut project).unwrap();
+                project = project.trim().to_string();
+                keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
             }
 
             let dir = file.path.split('/').collect::<Vec<_>>();
