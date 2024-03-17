@@ -175,12 +175,13 @@ impl Template {
             let path = Keywords::replace_keywords(keywords.to_owned(), file.path.to_owned());
 
             if dir.len() > 1 {
-                create_dirs(&Keywords::replace_keywords(
-                    keywords.to_owned(),
-                    file.path
-                        .replace(dir[dir.len() - 1], "")
-                        .replace('~', &keywords["{{$HOME}}"]),
-                ));
+                create_dirs(
+                    &Keywords::replace_keywords(
+                        keywords.to_owned(),
+                        file.path.to_owned().replace(dir[dir.len() - 1], ""),
+                    )
+                    .replace('~', &keywords["{{$HOME}}"]),
+                )
             }
 
             write_content(
