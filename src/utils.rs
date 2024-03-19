@@ -162,13 +162,13 @@ impl Template {
             keywords = find_and_exec_fns(file.content.clone(), keywords.clone(), re.clone());
             keywords = find_and_exec_fns(file.path.clone(), keywords.clone(), re.clone());
 
-            if file.path.contains("{{$PROJECTNAME}}")
-                || file.content.contains("{{$PROJECTNAME}}") && project.is_empty()
-            {
-                println!("Project name: ");
-                io::stdin().read_line(&mut project).unwrap();
-                project = project.trim().to_string();
-                keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
+            if file.path.contains("{{$PROJECTNAME}}") || file.content.contains("{{$PROJECTNAME}}") {
+                if project.is_empty() {
+                    println!("Project name: ");
+                    io::stdin().read_line(&mut project).unwrap();
+                    project = project.trim().to_string();
+                    keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
+                }
             }
 
             let dir = file.path.split('/').collect::<Vec<_>>();
