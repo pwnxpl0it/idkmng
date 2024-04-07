@@ -86,7 +86,7 @@ Here is a table of defualt keyword for idkmng:
 | Keyword/placeholder   | Value     | Example          |
 |--------------- | ---------------  | ---------------  |
 | PROJECTNAME   |                   |                  |
-| CURRENTDIR    | Current directory | /foo/bar => `bar`|
+| CURRENTDIR    | Current directory | pwd=/foo/bar => `bar`|
 | HOME          | Home directory    | `/home/user/`    |
 | YYYY    | Current Year in YYYY format| 2024    |
 | YY | Current Year in YY format| 24    |
@@ -125,7 +125,7 @@ Idkmng finds them stored in $HOME/.config/idkmng/config.toml
 AUTHOR = "Mohamed Tarek"
 USERNAME = "@pwnxpl0it"
 GITHUB = "https://github.com/pwnxpl0it"
-etc .....
+#etc .....
 ```
 
 ## 👾 Neovim plugin (idkmng.nvim) 
