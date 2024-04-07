@@ -1,13 +1,8 @@
+use crate::types::Fns;
 use colored::*;
 use core::fmt;
 use regex::Regex;
 use std::{collections::HashMap, env, io};
-
-#[derive(Clone, Copy)]
-pub enum Fns {
-    Read,
-    Env,
-}
 
 impl std::fmt::Display for Fns {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
