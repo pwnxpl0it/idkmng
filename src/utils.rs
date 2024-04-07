@@ -36,45 +36,22 @@ fn list_files(dir: &Path) -> Vec<String> {
     files
 }
 
-pub fn remove_fn_name(keyword: String, func_name: String) -> String {
-    keyword.replace(&format!(":{}", func_name), "")
-}
-
 fn find_and_exec_fns(
     txt: String,
     mut keywords: HashMap<String, String>,
     re: Regex,
 ) -> HashMap<String, String> {
-    for key in re.captures_iter(&txt) {
-        if let Some(key) = key.get(0) {
-            let keyword_ = key.as_str().to_string();
-            if !keywords.contains_key(&keyword_) {
-                let data = keyword_.as_str().split(':').collect::<Vec<_>>();
-                let mut value = String::from("");
-                if data.len() == 2 {
-                    let keyword_name = data[0].replace("{{$", "").replace("}}", "");
-                    let func = data[1].replace("}}", "");
-                    match func.as_str() {
-                        "read" => {
-                            value = read(keyword_name.to_owned());
-                        }
-                        "env" => {
-                            value = env(keyword_name.to_owned());
-                        }
-                        _ => {
-                            eprintln!(
-                                "\n{}: '{}' is not a valid function",
-                                "error".red(),
-                                func.yellow()
-                            )
-                        }
-                    }
-                    keywords.insert(keyword_.to_owned(), value.to_owned());
-                    keywords.insert(remove_fn_name(keyword_, func), value.to_owned());
-                }
-            }
-        }
+    if let Some((keyword_name, keyword, function)) = Fns::find(txt, keywords.clone(), re) {
+        let value = Fns::exec(function, keyword_name.clone()).unwrap();
+        keywords.insert(keyword.clone(), value.clone());
+        keywords.insert(
+            Fns::remove_fn_name(keyword.clone(), function.clone()),
+            value.clone(),
+        );
+    } else {
+        //Ignore
     }
+
     keywords
 }
 
