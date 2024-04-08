@@ -1,7 +1,7 @@
 pub mod config;
-pub mod file;
+mod file;
 pub mod funcs;
 pub mod keywords;
-pub mod templates;
+mod templates;
 pub mod types;
-pub mod utils;
+mod utils;
