@@ -6,7 +6,7 @@ impl Cli {
     pub fn parse() -> clap::ArgMatches {
         App::new("idkmng")
             .about("TOML based project initializer")
-            .version("0.1")
+            .version("2.0")
             .author("Mohamed Tarek @pwnxpl0it")
             .arg(
                 Arg::with_name("template")
