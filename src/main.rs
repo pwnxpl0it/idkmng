@@ -1,12 +1,5 @@
+use idkmng::types::Template;
 mod args;
-mod config;
-mod file;
-mod funcs;
-mod keywords;
-mod templates;
-mod types;
-mod utils;
-use crate::types::Template;
 use args::Cli;
 use colored::*;
 
