@@ -1,11 +1,18 @@
 [package]
 name = "idkmng"
-version = "1.4.2"
+version = "2.0.0"
 edition = "2021"
 repository = "https://github.com/pwnxpl0it/idkmng"
 authors = ["Mohamed Tarek @pwnxpl0it"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name="idkmng"
+path="src/idkmng/lib.rs"
+
+[[bin]]
+name="idkmng"
+path="src/main.rs"
 
 [dependencies]
 chrono = "0.4.34"
