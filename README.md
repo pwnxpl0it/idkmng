@@ -84,7 +84,9 @@ content="""
 -  `path` represents the path of the file you want to save content into
 -  `content` represents the content of the file,<br>
   and so on,you can have as much files as you want,<br>
-- `path` and `content` can have `{{$PROJECTNAME}}`, `{{$CURRENTDIR}}` `{{$HOME}}` as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `{{$CURRENTDIR}}` is provided!, same with `{{$HOME}}`.<br>
+- `path` and `content` can have keywords/placholders that idkmng knows it's value by default. Like `{{$HOME}}` or `{{$CURRENTDIR}}`.
+- some of those default keywords may ask for user input like `{{$PROJECTNAME}}`. 
+
 Here is a table of defualt keyword for idkmng:
 
 | Keyword/placeholder   | Value     | Example          |
