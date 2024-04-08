@@ -44,7 +44,7 @@ Replace <RELEASE> with the version number or tag of the release you want to inst
 now you should be able to run `idkmng` in your terminal!
 
 ## Creating a template 📜
-There is a template for creating a template! 
+<!--There is a template for creating a template! 
 it is located in templates directory/template.toml
 just run the following command! 
 ```sh
@@ -52,7 +52,9 @@ $ idkmng new
 ```
 enter template name and you should have one, it will go inside `~/.config/idkmng/templates/TEMPLATENAME.toml`
 also you can edit that Template too to create you own template that creates a template 🎉,<br>
+
 note that the template `info` section can be totally ignored, straight to the point where you only create files and directories you want!<br>
+-->
 The template structure is like the following:
 ```toml
 [info]
@@ -77,10 +79,12 @@ content="""
 > [!TIP]
 > Info section is not required and can be ignored
 
-so it's super easy to write and you can get this structure using <br> ```$ idkmng new```. <br>
-`path` represents the path of the file you want to save content into, and `content` represents the content of the file,<br>
-and so on,you can have as much files as you want,<br>
-`path` and `content` can have `{{$PROJECTNAME}}`, `{{$CURRENTDIR}}` `{{$HOME}}` as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `{{$CURRENTDIR}}` is provided!,same with `{{$HOME}}`.<br>
+<!-- so it's super easy to write and you can get this structure using <br> ```$ idkmng new```. <br> -->
+
+-  `path` represents the path of the file you want to save content into
+-  `content` represents the content of the file,<br>
+  and so on,you can have as much files as you want,<br>
+- `path` and `content` can have `{{$PROJECTNAME}}`, `{{$CURRENTDIR}}` `{{$HOME}}` as a default *"Keywords"* for idkmng, as it is going to ask you the Project name or Automatically add current directory if `{{$CURRENTDIR}}` is provided!, same with `{{$HOME}}`.<br>
 Here is a table of defualt keyword for idkmng:
 
 | Keyword/placeholder   | Value     | Example          |
@@ -103,7 +107,6 @@ content="""
 {{$TEST:read}}
 """
 ```
-note that `read` is the function that reads user input.
 
 Functions supported by idkmng:
 
