@@ -1,5 +1,6 @@
 use idkmng::types::Template;
-use idkmng::args::Cli;
+mod args;
+use args::Cli;
 use colored::*;
 
 fn main() {
