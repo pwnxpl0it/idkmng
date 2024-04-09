@@ -31,8 +31,6 @@ If you have Rust 🦀 🚀 installed on your machine run the following command:
 $ cargo install --git https://www.github.com/pwnxpl0it/idkmng
 ```
 
-<!-- TODO: Add templates repo-->
-
 Alternatively you can go to [Releases](https://github.com/pwnxpl0it/idkmng/releases) and download the binary
 
 ```console
@@ -55,6 +53,8 @@ also you can edit that Template too to create you own template that creates a te
 
 note that the template `info` section can be totally ignored, straight to the point where you only create files and directories you want!<br>
 -->
+Default templates path is `~/.config/idkmng/templates`<br>
+
 The template structure is like the following:
 ```toml
 [info]
@@ -78,6 +78,7 @@ content="""
 
 > [!TIP]
 > Info section is not required and can be ignored
+
 
 <!-- so it's super easy to write and you can get this structure using <br> ```$ idkmng new```. <br> -->
 
@@ -118,6 +119,115 @@ Functions supported by idkmng:
 | env    | Replace with value from environment variables     | `{{$PATH:env}}` |
 
 also keep in mind that once a function gets called on a keyword you can use `{{$TEST:read}}` or `{{$TEST}}` both are going to work and value will be replaced for both of them.
+### Example Templates
+I have a private personal templates repo that I may share soon, but for now I can only provide a few examples
+
+<details>
+  <summary>Neovim Plugin [Click to expand]</summary>
+
+  Now this one overhere is just for basic neovim plugin structure I use to create nvim plugins for my personal use
+  also I have another one to create the docs for the plugin (just basic files not autogenerate docs)
+
+```toml
+[info]
+name = "Neovim Plugin"
+description = "A template for nvim plugin"
+author = "Mohamed Tarek @pwnxpl0it"
+
+[[files]]
+path="{{$PROJECTNAME}}/lua/{{$PROJECTNAME}}/init.lua"
+content="""
+local M = {}
+
+M.config = {}
+
+M.setup = function ()
+   if config ~= nil then
+        M.config = config
+    end
+
+end
+
+return M
+"""
+
+[[files]]
+path="{{$PROJECTNAME}}/plugin/init.lua"
+content="""
+require("{{$PROJECTNAME}}")
+"""
+```
+
+</details>
+
+
+<details>
+    <summary>Jekyll new blogpost [Click to expand]</summary>
+
+I am starting a Blog (still underconstruction 🏗️) but anyway I use this template to create a new post in my blog
+directly from CLI,This one here uses more keywords and includes a private BLOGPATH placeholder that it's value is loaded from config file.
+
+```toml
+[info]
+name = "new_post"
+description = "New jekyll post"
+author = "Mohamed Tarek @pwnxpl0it"
+
+[[files]]
+path="{{$BLOGPATH}}/_posts/{{$YYYY}}-{{$MM}}-{{$DD}}-{{$blogtitle:read}}.markdown"
+content="""
+---
+layout: post
+title: "{{$blogtitle}}"
+date: {{$NOW_UTC}}
+tags: {{$Tags:read}}
+---
+
+"""
+
+```
+
+</details>
+
+<details>
+    <summary>Browser (Chrome) Extension [Click to expand]</summary>
+This one is just for creating a really BASIC chrome extension with no icon or anything else, I use it because I like it to be minimal, still can add more placeholders but since this is for private use I don't really care, about version etc...
+
+```toml
+[info] # Generated using `idkmng new` btw
+name = "browser_extension"
+description = "A Template for creating a browser extension"
+author = "Mohamed Tarek @pwnxpl0it"
+refrence= "https://developer.chrome.com/docs/extensions/mv3/manifest/"
+
+[[files]]
+path="{{$PROJECTNAME}}/manifest.json"
+content="""
+{
+  "manifest_version": 3,
+  "name":"{{$PROJECTNAME}}",
+  "version": "1.0.1",
+  "content_scripts":[
+    {
+     "matches":["<all_urls>"],
+     "js":["content.js"]
+    }
+  ]
+}
+"""
+
+[[files]]
+path="{{$PROJECTNAME}}/content.js"
+content="""
+console.log("Hello world!")
+"""
+
+```
+
+*TIP 💡 *: Info section can have any additional values, it won't get printed but maybe usefull if sharing the template or just as a reference for docs like I did here
+
+</details>
+<!--TODO: Add more examples-->
 
 ### Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
