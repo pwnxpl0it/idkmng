@@ -18,7 +18,7 @@ impl Fns {
     /// Example: {{$hi:read}}
     /// returns: {{$hi}}
     pub fn remove_fn_name(keyword: String, func_name: Fns) -> String {
-        keyword.replace(&format!("{{$}}{}", func_name), "")
+        keyword.replace(&format!(":{}", func_name), "")
     }
 
     /// This method finds `functions` in a string based on a Regex pattern that matches keywords
