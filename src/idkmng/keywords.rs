@@ -1,4 +1,5 @@
 use crate::config::{Config, CONFIG_PATH, KEYWORDS_FORMAT};
+use crate::utils::gethome;
 use chrono::Datelike;
 use std::{collections::HashMap, env};
 
@@ -71,9 +72,10 @@ impl Keywords {
         );
 
         let other_keywords = Config {
-            path: CONFIG_PATH.replace("{{$HOME}}", &keywords["{{$HOME}}"]),
+            path: CONFIG_PATH.replace("{{$HOME}}", &gethome()),
         }
-        .get_keywords(); // Special keywords
+        .get_keywords();
+
         keywords.extend(other_keywords);
         keywords
     }

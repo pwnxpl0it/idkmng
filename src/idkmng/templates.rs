@@ -32,7 +32,7 @@ impl Template {
                 let file = File::new(file.to_string().replace("./", ""), {
                     match fs::read_to_string(file) {
                         Ok(content) => content,
-                        Err(e) => panic!("{}:{}", file.red(), e),
+                        Err(e) => panic!("{}:{}", file.red().bold(), e),
                     }
                 });
                 files.push(file); // Push to Files Vector
@@ -53,14 +53,22 @@ impl Template {
     }
 
     /// This method "extracts" a template, means it takes a template and starts initializing files based that template
-    pub fn extract(filename: String) {
-        let mut keywords = Keywords::init();
-        let template = Self::validate(filename, keywords.to_owned());
+    pub fn extract(filename: String, is_file: bool) {
+        let mut keywords: HashMap<String, String> = HashMap::new();
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
 
-        println!("{}: {}", "Using Template".blue(), &template.magenta());
+        #[allow(unused_assignments)]
+        let mut template = String::from("");
 
-        let sample = Self::parse(&template);
+        if is_file {
+            keywords = Keywords::init();
+            template = Self::validate(filename);
+            println!("\n{}: {}", "Using Template".blue(), &template.magenta());
+        } else {
+            template = filename
+        }
+
+        let sample = Self::parse(&template, is_file);
         Self::show_info(&sample);
 
         let files = sample.files;
@@ -87,27 +95,35 @@ impl Template {
                         keywords.to_owned(),
                         file.path.to_owned().replace(dir[dir.len() - 1], ""),
                     )
-                    .replace('~', &keywords["{{$HOME}}"]),
+                    .replace('~', &gethome()),
                 )
             }
 
             write_content(
-                &path.replace('~', &keywords["{{$HOME}}"]),
+                &path.replace('~', &gethome()),
                 Keywords::replace_keywords(keywords.to_owned(), file.content),
             )
         });
     }
 
     /// Parse a Template
-    fn parse(template: &str) -> Self {
-        let content =
-            fs::read_to_string(template).unwrap_or_else(|_| panic!("Failed to Parse {}", template));
+    fn parse(template: &str, is_file: bool) -> Self {
+        #[allow(unused_assignments)]
+        let mut content = String::from("");
+        match is_file {
+            true => {
+                content = fs::read_to_string(template)
+                    .unwrap_or_else(|_| panic!("Failed to Parse {}", template));
+            }
+            false => content = template.to_string(),
+        }
+
         toml::from_str(&content).unwrap()
     }
 
     /// This method validates Template path, in other words it just checks if the template is in
     /// the current working Directory,if not it uses the default templates directory, also automatically adds .toml
-    fn validate(mut template: String, keywords: HashMap<String, String>) -> String {
+    fn validate(mut template: String) -> String {
         if template.contains(".toml") {
             //IGNORE
         } else {
@@ -117,7 +133,7 @@ impl Template {
         if fs::read_to_string(&template).is_ok() {
             //IGNORE
         } else {
-            template = TEMPLATES_PATH.replace("{{$HOME}}", &keywords["{{$HOME}}"]) + &template
+            template = TEMPLATES_PATH.replace("{{$HOME}}", &gethome()) + &template
         }
 
         template

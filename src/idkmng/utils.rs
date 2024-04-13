@@ -1,7 +1,16 @@
 use crate::types::Fns;
 use colored::*;
+use dirs;
 use regex::Regex;
 use std::{collections::HashMap, fs, path::Path};
+
+pub fn gethome() -> String {
+    dirs::home_dir()
+        .expect("Failed to know home directory")
+        .to_str()
+        .unwrap()
+        .to_string()
+}
 
 pub fn create_dirs(dir: &str) {
     match fs::create_dir_all(dir) {
@@ -11,7 +20,7 @@ pub fn create_dirs(dir: &str) {
 }
 
 pub fn write_content(path: &str, content: String) {
-    match fs::write(path, content) {
+    match fs::write(path, content.replace("initPJNAME","{{$PROJECTNAME}}")) {
         Ok(_) => println!("{}: {}", "file written".blue(), path.bold().green()),
         Err(e) => eprintln!("{}: {} {}", "error".red(), path, e),
     }
