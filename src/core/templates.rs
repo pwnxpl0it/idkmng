@@ -3,8 +3,9 @@ use crate::keywords::Keywords;
 use crate::types::*;
 use crate::utils::*;
 use colored::Colorize;
+use promptly::prompt;
 use regex::Regex;
-use std::{collections::HashMap, fs, io, path::Path};
+use std::{collections::HashMap, fs, path::Path};
 
 impl Template {
     /// This method return a new Template instance, it takes `Information` and a vector of `File`.
@@ -17,12 +18,10 @@ impl Template {
 
     /// This method basically generate a new Template and saves it
     /// It utilizes the Self::new() method, gives it an Empty `Information` Instance and the
-    /// Vector it created by listing all files in the working current directory
-    pub fn generate() {
+    /// Vector it created by listing all files in the current working directory
+    pub fn generate(dest: &str) {
         // get the current directory name by utilizing Keywords::init() -> a table of default
-        // Keywords for idkmng, including current Directory
-        let dest = format!("{}.toml", Keywords::init()["{{$CURRENTDIR}}"]);
-        println!("{}: {}", "Creating Template".bold().green(), &dest.yellow());
+        // Keywords/Values for idkmng, that includes current directory
 
         let mut files: Vec<File> = Vec::new(); // Create a new Vector of File
 
@@ -53,23 +52,13 @@ impl Template {
     }
 
     /// This method "extracts" a template, means it takes a template and starts initializing files based that template
-    pub fn extract(filename: String, is_file: bool) {
-        let mut keywords: HashMap<String, String> = HashMap::new();
+    pub fn extract(template: String, is_file: bool) {
+        let mut keywords: HashMap<String, String>;
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
 
-        #[allow(unused_assignments)]
-        let mut template = String::from("");
-
-        if is_file {
-            keywords = Keywords::init();
-            template = Self::validate(filename);
-            println!("\n{}: {}", "Using Template".blue(), &template.magenta());
-        } else {
-            template = filename
-        }
+        keywords = Keywords::init();
 
         let sample = Self::parse(&template, is_file);
-        Self::show_info(&sample);
 
         let files = sample.files;
         let mut project = String::from("");
@@ -79,9 +68,7 @@ impl Template {
 
             if file.path.contains("{{$PROJECTNAME}}") || file.content.contains("{{$PROJECTNAME}}") {
                 if project.is_empty() {
-                    println!("Project name: ");
-                    io::stdin().read_line(&mut project).unwrap();
-                    project = project.trim().to_string();
+                    project = prompt("Project name").unwrap();
                     keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
                 }
             }
@@ -107,7 +94,7 @@ impl Template {
     }
 
     /// Parse a Template
-    fn parse(template: &str, is_file: bool) -> Self {
+    pub fn parse(template: &str, is_file: bool) -> Self {
         #[allow(unused_assignments)]
         let mut content = String::from("");
         match is_file {
@@ -123,7 +110,7 @@ impl Template {
 
     /// This method validates Template path, in other words it just checks if the template is in
     /// the current working Directory,if not it uses the default templates directory, also automatically adds .toml
-    fn validate(mut template: String) -> String {
+    pub fn validate(mut template: String) -> String {
         if template.contains(".toml") {
             //IGNORE
         } else {
@@ -141,7 +128,7 @@ impl Template {
 
     /// This method shows information about current Template, basically Reads them from Information
     /// section in the Template TOML file
-    fn show_info(template: &Self) {
+    pub fn show_info(template: &Self) {
         match &template.info {
             Some(information) => println!(
                 "{}: {}\n{}: {}\n{}: {}\n",

@@ -1,33 +1,23 @@
 use crate::keywords::Keywords;
 use crate::types::Template;
-use colored::Colorize;
+use crate::utils::gethome;
 use std::collections::HashMap;
 use std::fs;
-use crate::utils::gethome;
 use toml::Value;
-
-pub struct Config {
-    pub path: String,
-}
 
 pub const CONFIG_PATH: &str = "{{$HOME}}/.config/idkmng/config.toml";
 pub const TEMPLATES_PATH: &str = "{{$HOME}}/.config/idkmng/templates/";
 pub const KEYWORDS_FORMAT: &str = "{{$%s:f}}";
 pub const KEYWORDS_REGEX: &str = r"\{\{\$[^\s}]+(:[^\s}]+)?\}\}";
 
+pub struct Config {
+    pub path: String,
+}
+
 impl Config {
     pub fn init(self) {
-        eprintln!(
-                "\n{}: Looks like first time running idkmng,\n- [{}] creating your config at {}\n- [{}] creating templates folder at {}\n",
-                "error".bold().red(),
-                "+".red(),
-                self.path,
-                "+".red(),
-                TEMPLATES_PATH
-            );
-
         // this sample is just a template that create config.toml and the new.toml template for the
-        // first time, Now something maybe confusing is the "initPJNAME" wtf is it ? 
+        // first time, Now something maybe confusing is the "initPJNAME" wtf is it ?
         // That's just a way to workaround auto replacing PROJECTNAME in templates
         let sample = r#"
 [[files]]
@@ -61,9 +51,12 @@ content = '''
 '''
             "#
         .replace("CONFIGPATH", &self.path)
-        .replace("TEMPLATES_PATH", &TEMPLATES_PATH.replace("{{$HOME}}", &gethome()));
+        .replace(
+            "TEMPLATES_PATH",
+            &TEMPLATES_PATH.replace("{{$HOME}}", &gethome()),
+        );
 
-        Template::extract(sample.to_string(), false);
+        Template::extract(sample, false);
     }
 
     pub fn get_keywords(self) -> HashMap<String, String> {

@@ -20,7 +20,7 @@ pub fn create_dirs(dir: &str) {
 }
 
 pub fn write_content(path: &str, content: String) {
-    match fs::write(path, content.replace("initPJNAME","{{$PROJECTNAME}}")) {
+    match fs::write(path, content.replace("initPJNAME", "{{$PROJECTNAME}}")) {
         Ok(_) => println!("{}: {}", "file written".blue(), path.bold().green()),
         Err(e) => eprintln!("{}: {} {}", "error".red(), path, e),
     }

@@ -1,8 +1,9 @@
 use crate::types::Fns;
 use colored::*;
 use core::fmt;
+use promptly::prompt;
 use regex::Regex;
-use std::{collections::HashMap, env, io};
+use std::{collections::HashMap, env};
 
 impl std::fmt::Display for Fns {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -61,17 +62,9 @@ impl Fns {
     /// This method executes allowed functions such as: read,env
     pub fn exec(func: Fns, keyword_name: String) -> Result<String, String> {
         match func {
-            Fns::Read => Ok(Self::read(keyword_name)),
+            Fns::Read => Ok(prompt(keyword_name).unwrap()),
             Fns::Env => Ok(Self::env(keyword_name)),
         }
-    }
-
-    /// This function asks for user input from user
-    fn read(name: String) -> String {
-        println!("{}:", name);
-        let mut input = String::from("");
-        io::stdin().read_line(&mut input).unwrap();
-        input.trim().to_string()
     }
 
     /// This function reads from environment variables and returns the value as a string
