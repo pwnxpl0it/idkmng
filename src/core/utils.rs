@@ -46,16 +46,18 @@ pub fn find_and_exec_fns(
     mut keywords: HashMap<String, String>,
     re: Regex,
 ) -> HashMap<String, String> {
-    if let Some((keyword_name, keyword, function)) = Fns::find(txt, keywords.clone(), re) {
-        let value = Fns::exec(function, keyword_name.clone()).unwrap();
-        keywords.insert(keyword.clone(), value.clone());
-        keywords.insert(
-            Fns::remove_fn_name(keyword.clone(), function),
-            value.clone(),
-        );
+    if let Some(found) = Fns::find(txt, &keywords, &re) {
+        for (keyword_name, (keyword, function)) in found {
+            if let Ok(value) = Fns::exec(function, keyword_name.clone()) {
+                keywords.insert(keyword.clone(), value.clone());
+                keywords.insert(
+                    Fns::remove_fn_name(keyword.clone(), function),
+                    value.clone(),
+                );
+            }
+        }
     } else {
-        //Ignore
+        // Ignore
     }
-
     keywords
 }
