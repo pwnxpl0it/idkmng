@@ -4,6 +4,7 @@ use core::fmt;
 use promptly::prompt;
 use regex::Regex;
 use std::{collections::HashMap, env};
+use indexmap::IndexMap;
 
 impl std::fmt::Display for Fns {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -22,42 +23,48 @@ impl Fns {
         keyword.replace(&format!(":{}", func_name), "")
     }
 
-    /// This method finds `functions` in a string based on a Regex pattern that matches keywords
+    /// This method finds `functions` in a string based on a Regex pattern that matches keywords with functions
     pub fn find(
-        txt: String,
-        keywords: HashMap<String, String>,
-        re: Regex,
-    ) -> Option<(String, String, Fns)> {
-        for key in re.captures_iter(&txt) {
-            if let Some(key) = key.get(0) {
-                let keyword = key.as_str().to_string();
+    txt: String,
+    keywords: &HashMap<String, String>,
+    re: &Regex,
+) -> Option<IndexMap<String, (String, Fns)>> {
+    let mut found = IndexMap::new();
 
-                if !keywords.contains_key(&keyword) {
-                    let data = keyword.as_str().split(':').collect::<Vec<_>>();
+    for key in re.captures_iter(&txt) {
+        if let Some(key) = key.get(0) {
+            let keyword = key.as_str().to_string();
 
-                    if data.len() == 2 {
-                        let keyword_name = data[0].replace("{{$", "").replace("}}", "");
-                        let func = data[1].replace("}}", "");
+            if !keywords.contains_key(&keyword) {
+                let data = keyword.as_str().split(':').collect::<Vec<_>>();
 
-                        match func.as_str() {
-                            "read" => return Some((keyword_name, keyword, Fns::Read)),
-                            "env" => return Some((keyword_name, keyword, Fns::Env)),
-                            _ => {
-                                eprintln!(
-                                    "\n{}: '{}' is not a valid function",
-                                    "error".red(),
-                                    func.yellow()
-                                );
-                                return None;
-                            }
+                if data.len() == 2 {
+                    let keyword_name = data[0].replace("{{$", "").replace("}}", "");
+                    let func = data[1].replace("}}", "");
+
+                    match func.as_str() {
+                        "read" => {
+                            found.insert(keyword_name, (keyword.clone(), Fns::Read));
+                        }
+                        "env" => {
+                            found.insert(keyword_name, (keyword.clone(), Fns::Env));
+                        }
+                        _ => {
+                            eprintln!(
+                                "\n{}: '{}' is not a valid function",
+                                "error".to_string().red(),
+                                func.yellow()
+                            );
+                            return None;
                         }
                     }
                 }
             }
         }
-
-        None
     }
+
+    Some(found)
+}
 
     /// This method executes allowed functions such as: read,env
     pub fn exec(func: Fns, keyword_name: String) -> Result<String, String> {
