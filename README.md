@@ -79,6 +79,8 @@ content="""
 > [!TIP]
 > Info section is not required and can be ignored
 
+> [!NOTE]
+> You can use -q (quiet) option to hide template information even if it is provided in the template
 
 <!-- so it's super easy to write and you can get this structure using <br> ```$ idkmng new```. <br> -->
 
