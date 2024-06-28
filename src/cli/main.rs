@@ -21,7 +21,10 @@ fn main() {
     } else if let Some(filename) = args.value_of("template") {
         let template = Template::validate(filename.to_string());
         println!("\n{}: {}", "Using Template".blue(), &template.magenta());
-        Template::show_info(&Template::parse(&template, true));
+        if !args.is_present("quiet") {
+            Template::show_info(&Template::parse(&template, true));
+        }
+
         Template::extract(template, true);
     } else {
         println!(

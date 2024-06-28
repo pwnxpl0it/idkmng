@@ -14,6 +14,12 @@ impl Cli {
                     .takes_value(true)
                     .index(1),
             )
+            .arg(
+                Arg::with_name("quiet")
+                    .help("Hide information section of the template")
+                    .short('q')
+                    .requires("template"),
+            )
             .subcommand(Command::new("init").about("Creates a template for the current directory"))
             .get_matches()
     }
