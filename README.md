@@ -55,6 +55,9 @@ note that the template `info` section can be totally ignored, straight to the po
 -->
 Default templates path is `~/.config/idkmng/templates`<br>
 
+> [!NOTE]
+> You can use -c option to override the config path if you needed to.
+
 The template structure is like the following:
 ```toml
 [info]
@@ -236,7 +239,8 @@ Also there is one more time saving way! if you have some files in `/foo/bar/` yo
 
 ## Special Keywords 🔧
 You can have your own Keywords for idkmng to replace with desired values!
-Idkmng finds them stored in $HOME/.config/idkmng/config.toml
+Idkmng finds them stored in $HOME/.config/idkmng/config.toml Or the config path you specified using -c/--config option 🦀
+
 ```toml
 [Keywords]
 AUTHOR = "Mohamed Tarek"

@@ -1,5 +1,4 @@
-use crate::config::{Config, CONFIG_PATH, KEYWORDS_FORMAT};
-use crate::utils::gethome;
+use crate::config::{Config, KEYWORDS_FORMAT};
 use chrono::Datelike;
 use std::{collections::HashMap, env};
 
@@ -20,7 +19,7 @@ impl Keywords {
         }
     }
 
-    pub fn init() -> HashMap<String, String> {
+    pub fn init(config: Config) -> HashMap<String, String> {
         let mut keywords = HashMap::new();
         keywords.insert(
             Self::new(String::from("HOME"), "".to_string()),
@@ -71,10 +70,7 @@ impl Keywords {
             chrono::Local::now().day().to_string(),
         );
 
-        let other_keywords = Config {
-            path: CONFIG_PATH.replace("{{$HOME}}", &gethome()),
-        }
-        .get_keywords();
+        let other_keywords = config.get_keywords();
 
         keywords.extend(other_keywords);
         keywords

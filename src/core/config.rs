@@ -1,20 +1,33 @@
 use crate::keywords::Keywords;
 use crate::types::Template;
-use crate::utils::gethome;
 use std::collections::HashMap;
 use std::fs;
 use toml::Value;
 
-pub const CONFIG_PATH: &str = "{{$HOME}}/.config/idkmng/config.toml";
-pub const TEMPLATES_PATH: &str = "{{$HOME}}/.config/idkmng/templates/";
 pub const KEYWORDS_FORMAT: &str = "{{$%s:f}}";
 pub const KEYWORDS_REGEX: &str = r"\{\{\$[^\s}]+(:[^\s}]+)?\}\}";
 
 pub struct Config {
     pub path: String,
+    pub templates_path: String,
 }
 
 impl Config {
+    pub fn new(path: &str) -> Self {
+        let config_path = shellexpand::tilde(path).to_string();
+        let mut config_dir: Vec<&str> = path.split("/").collect();
+
+        config_dir.pop();
+
+        //NOTE: maybe templates path should be parsed from config.toml itself??
+        let templates = config_dir.join("/") + "/templates/";
+
+        Config {
+            path: config_path,
+            templates_path: shellexpand::tilde(&templates).to_string(),
+        }
+    }
+
     pub fn init(self) {
         // this sample is just a template that create config.toml and the new.toml template for the
         // first time, Now something maybe confusing is the "initPJNAME" wtf is it ?
@@ -29,7 +42,7 @@ description = "A Template for making a template"
 author = "Mohamed Tarek @pwnxpl0it"
 
 [[files]]
-path="~/.config/idkmng/templates/initPJNAME.toml"
+path="TEMPLATES_PATH/initPJNAME.toml"
 content="""
 [info]
 name = "initPJNAME"
@@ -51,12 +64,9 @@ content = '''
 '''
             "#
         .replace("CONFIGPATH", &self.path)
-        .replace(
-            "TEMPLATES_PATH",
-            &TEMPLATES_PATH.replace("{{$HOME}}", &gethome()),
-        );
+        .replace("TEMPLATES_PATH", &self.templates_path);
 
-        Template::extract(sample, false);
+        Template::extract(sample, false, self);
     }
 
     pub fn get_keywords(self) -> HashMap<String, String> {

@@ -52,11 +52,11 @@ impl Template {
     }
 
     /// This method "extracts" a template, means it takes a template and starts initializing files based that template
-    pub fn extract(template: String, is_file: bool) {
+    pub fn extract(template: String, is_file: bool, config: Config) {
         let mut keywords: HashMap<String, String>;
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
 
-        keywords = Keywords::init();
+        keywords = Keywords::init(config);
 
         let sample = Self::parse(&template, is_file);
 
@@ -77,17 +77,14 @@ impl Template {
             let path = Keywords::replace_keywords(keywords.to_owned(), file.path.to_owned());
 
             if dir.len() > 1 {
-                create_dirs(
-                    &Keywords::replace_keywords(
-                        keywords.to_owned(),
-                        file.path.to_owned().replace(dir[dir.len() - 1], ""),
-                    )
-                    .replace('~', &gethome()),
-                )
+                create_dirs(&shellexpand::tilde(&Keywords::replace_keywords(
+                    keywords.to_owned(),
+                    file.path.to_owned().replace(dir[dir.len() - 1], ""),
+                )))
             }
 
             write_content(
-                &path.replace('~', &gethome()),
+                &shellexpand::tilde(&path),
                 Keywords::replace_keywords(keywords.to_owned(), file.content),
             )
         });
@@ -108,9 +105,9 @@ impl Template {
         toml::from_str(&content).unwrap()
     }
 
-    /// This method validates Template path, in other words it just checks if the template is in
-    /// the current working Directory,if not it uses the default templates directory, also automatically adds .toml
-    pub fn validate(mut template: String) -> String {
+    /// This method validates template path, in other words it just checks if the template is in
+    /// the current working directory,if not it uses the default templates directory, also automatically adds .toml
+    pub fn validate(mut template: String, template_path: String) -> String {
         if template.contains(".toml") {
             //IGNORE
         } else {
@@ -120,14 +117,14 @@ impl Template {
         if fs::read_to_string(&template).is_ok() {
             //IGNORE
         } else {
-            template = TEMPLATES_PATH.replace("{{$HOME}}", &gethome()) + &template
+            template = template_path + &template
         }
 
         template
     }
 
-    /// This method shows information about current Template, basically Reads them from Information
-    /// section in the Template TOML file
+    /// This method shows information about current template, basically Reads them from Information
+    /// section in the template TOML file
     pub fn show_info(template: &Self) {
         match &template.info {
             Some(information) => println!(
