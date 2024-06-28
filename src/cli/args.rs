@@ -20,6 +20,14 @@ impl Cli {
                     .short('q')
                     .requires("template"),
             )
+            .arg(
+                Arg::with_name("config")
+                    .long("config")
+                    .short('c')
+                    .help("Config path")
+                    .default_value("~/.config/idkmng/config.toml")
+                    .requires("template")
+            )
             .subcommand(Command::new("init").about("Creates a template for the current directory"))
             .get_matches()
     }

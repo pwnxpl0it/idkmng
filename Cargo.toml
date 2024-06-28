@@ -18,8 +18,9 @@ path="src/cli/main.rs"
 chrono = "0.4.34"
 clap = { version = "3.2.17", features = ["derive"] }
 colored = "2.0.0"
-dirs = "5.0.1"
+indexmap = "2.2.6"
 promptly = "0.3.1"
 regex = "1.7.1"
 serde = { version = "1.0.152", features = ["serde_derive"] }
+shellexpand = "3.1.0"
 toml = "0.5.9"

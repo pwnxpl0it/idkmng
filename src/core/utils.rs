@@ -1,16 +1,7 @@
 use crate::types::Fns;
 use colored::*;
-use dirs;
 use regex::Regex;
 use std::{collections::HashMap, fs, path::Path};
-
-pub fn gethome() -> String {
-    dirs::home_dir()
-        .expect("Failed to know home directory")
-        .to_str()
-        .unwrap()
-        .to_string()
-}
 
 pub fn create_dirs(dir: &str) {
     match fs::create_dir_all(dir) {

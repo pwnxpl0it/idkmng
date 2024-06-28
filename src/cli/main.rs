@@ -1,3 +1,4 @@
+use idkmng::config::Config;
 use idkmng::types::Template;
 mod args;
 use args::Cli;
@@ -5,6 +6,8 @@ use colored::*;
 
 fn main() {
     let args = Cli::parse();
+
+    let config = Config::new(args.value_of("config").unwrap());
 
     if args.subcommand_matches("init").is_some() {
         let dest = format!(
@@ -19,13 +22,13 @@ fn main() {
         println!("{}: {}", "Creating Template".bold().green(), &dest.yellow());
         Template::generate(&dest);
     } else if let Some(filename) = args.value_of("template") {
-        let template = Template::validate(filename.to_string());
+        let template = Template::validate(filename.to_string(), config.templates_path.clone());
         println!("\n{}: {}", "Using Template".blue(), &template.magenta());
         if !args.is_present("quiet") {
             Template::show_info(&Template::parse(&template, true));
         }
 
-        Template::extract(template, true);
+        Template::extract(template, true, config);
     } else {
         println!(
             "{} {}",
