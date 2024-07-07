@@ -1,7 +1,6 @@
 use crate::config::*;
-use crate::keywords::Keywords;
-use crate::types::*;
 use crate::utils::*;
+use crate::*;
 use colored::Colorize;
 use promptly::prompt;
 use regex::Regex;

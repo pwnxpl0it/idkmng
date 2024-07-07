@@ -1,5 +1,5 @@
-use idkmng::config::Config;
-use idkmng::types::Template;
+use idkmng::Config;
+use idkmng::Template;
 mod args;
 use args::Cli;
 use colored::*;

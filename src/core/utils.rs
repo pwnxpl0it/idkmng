@@ -1,4 +1,4 @@
-use crate::types::Fns;
+use crate::Fns;
 use colored::*;
 use regex::Regex;
 use std::{collections::HashMap, fs, path::Path};

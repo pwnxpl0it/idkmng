@@ -1,8 +1,8 @@
-use crate::config::{Config, KEYWORDS_FORMAT};
+use crate::config::KEYWORDS_FORMAT;
+use crate::Keywords;
+use crate::Config;
 use chrono::Datelike;
 use std::{collections::HashMap, env};
-
-pub struct Keywords {}
 
 impl Keywords {
     pub fn new(name: String, function: String) -> String {

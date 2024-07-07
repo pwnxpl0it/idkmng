@@ -1,4 +1,4 @@
-use crate::types::Fns;
+use crate::Fns;
 use colored::*;
 use core::fmt;
 use promptly::prompt;

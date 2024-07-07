@@ -1,16 +1,12 @@
-use crate::keywords::Keywords;
-use crate::types::Template;
+use crate::Keywords;
+use crate::Template;
+use crate::Config;
 use std::collections::HashMap;
 use std::fs;
 use toml::Value;
 
 pub const KEYWORDS_FORMAT: &str = "{{$%s:f}}";
 pub const KEYWORDS_REGEX: &str = r"\{\{\$[^\s}]+(:[^\s}]+)?\}\}";
-
-pub struct Config {
-    pub path: String,
-    pub templates_path: String,
-}
 
 impl Config {
     pub fn new(path: &str) -> Self {
