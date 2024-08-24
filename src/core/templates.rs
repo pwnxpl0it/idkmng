@@ -7,7 +7,7 @@ use regex::Regex;
 use std::{collections::HashMap, fs, path::Path};
 
 impl Template {
-    /// This method return a new Template instance, it takes `Information` and a vector of `File`.
+    /// This method returns a new Template instance, it takes `Information` and a vector of `File`.
     fn new(info_: Information, files_: Vec<File>) -> Self {
         Self {
             info: Some(info_),
@@ -15,7 +15,7 @@ impl Template {
         }
     }
 
-    /// This method basically generate a new Template and saves it
+    /// This method basically generates a new Template and saves it
     /// It utilizes the Self::new() method, gives it an Empty `Information` Instance and the
     /// Vector it created by listing all files in the current working directory
     pub fn generate(dest: &str) {
@@ -107,15 +107,11 @@ impl Template {
     /// This method validates template path, in other words it just checks if the template is in
     /// the current working directory,if not it uses the default templates directory, also automatically adds .toml
     pub fn validate(mut template: String, template_path: String) -> String {
-        if template.contains(".toml") {
-            //IGNORE
-        } else {
+        if !template.contains(".toml") {
             template += ".toml"
         }
 
-        if fs::read_to_string(&template).is_ok() {
-            //IGNORE
-        } else {
+        if !fs::read_to_string(&template).is_ok() {
             template = template_path + &template
         }
 
