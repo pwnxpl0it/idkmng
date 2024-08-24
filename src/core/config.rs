@@ -11,7 +11,7 @@ pub const KEYWORDS_REGEX: &str = r"\{\{\$[^\s}]+(:[^\s}]+)?\}\}";
 impl Config {
     pub fn new(path: &str) -> Self {
         let config_path = shellexpand::tilde(path).to_string();
-        let mut config_dir: Vec<&str> = path.split("/").collect();
+        let mut config_dir: Vec<&str> = path.split('/').collect();
 
         config_dir.pop();
 
