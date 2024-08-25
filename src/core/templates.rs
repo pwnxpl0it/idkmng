@@ -50,7 +50,7 @@ impl Template {
         fs::write(&dest, toml_string).unwrap();
     }
 
-    /// This method "extracts" a template, means it takes a template and starts initializing files based that template
+    /// This method "extracts" a template, means it takes a template and starts initializing files based on that template
     pub fn extract(template: String, is_file: bool, config: Config) {
         let mut keywords: HashMap<String, String>;
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
