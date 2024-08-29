@@ -16,7 +16,7 @@ impl Cli {
             )
             .arg(
                 Arg::with_name("quiet")
-                    .help("Hide information section of the template")
+                    .help("Hide information of the template")
                     .short('q')
                     .requires("template"),
             )
@@ -26,7 +26,13 @@ impl Cli {
                     .short('c')
                     .help("Config path")
                     .default_value("~/.config/idkmng/config.toml")
-                    .requires("template")
+                    .requires("template"),
+            )
+            .arg(
+                Arg::with_name("json")
+                    .help("read key,value pairs from a json file")
+                    .long("json")
+                    .takes_value(true),
             )
             .subcommand(Command::new("init").about("Creates a template for the current directory"))
             .get_matches()
