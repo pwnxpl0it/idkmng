@@ -1,13 +1,21 @@
 use idkmng::Config;
+use idkmng::Keywords;
 use idkmng::Template;
+use std::fs;
 mod args;
 use args::Cli;
 use colored::*;
 
 fn main() {
     let args = Cli::parse();
-
     let config = Config::new(args.value_of("config").unwrap());
+    let mut keywords = Keywords::init(config.clone());
+    let mut json_data: serde_json::Value = Default::default();
+
+    if args.is_present("json") {
+        let json_file = fs::read_to_string(args.value_of("json").unwrap());
+        json_data = serde_json::from_str(&json_file.unwrap()).unwrap();
+    }
 
     if args.subcommand_matches("init").is_some() {
         let dest = format!(
@@ -28,7 +36,7 @@ fn main() {
             Template::show_info(&Template::parse(&template, true));
         }
 
-        Template::extract(template, true, config);
+        Template::extract(template, true, &mut keywords, config, json_data);
     } else {
         println!(
             "{} {}",
