@@ -51,19 +51,37 @@ impl Template {
     }
 
     /// This method "extracts" a template, means it takes a template and starts initializing files based that template
-    pub fn extract(template: String, is_file: bool, config: Config) {
-        let mut keywords: HashMap<String, String>;
+    pub fn extract(
+        template: String,
+        is_file: bool,
+        keywords: &mut HashMap<String, String>,
+        config: Config,
+        json_data: serde_json::Value,
+    ) {
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
 
-        keywords = Keywords::init(config);
+        if keywords.is_empty() {
+            *keywords = Keywords::init(config);
+        }
 
         let sample = Self::parse(&template, is_file);
 
         let files = sample.files;
         let mut project = String::from("");
         files.into_iter().for_each(|file| {
-            keywords = find_and_exec_fns(file.content.clone(), keywords.clone(), re.clone());
-            keywords = find_and_exec_fns(file.path.clone(), keywords.clone(), re.clone());
+            *keywords = find_and_exec_fns(
+                file.content.clone(),
+                keywords.clone(),
+                re.clone(),
+                json_data.clone(),
+            );
+
+            *keywords = find_and_exec_fns(
+                file.path.clone(),
+                keywords.clone(),
+                re.clone(),
+                json_data.clone(),
+            );
 
             if file.path.contains("{{$PROJECTNAME}}") || file.content.contains("{{$PROJECTNAME}}") {
                 if project.is_empty() {
