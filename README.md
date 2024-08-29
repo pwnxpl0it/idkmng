@@ -5,23 +5,23 @@ idkmng is a TOML-based project initializer that helps you quickly set up project
 Template-based, with easy [TOML](https://toml.io/en/) support!
 
 ## Idea 🧠:
-In many cases you need to create a project that needs some special files,for example a browser extension, your worktree will look like:
+Creating a project often involves setting up specific files with unique formats. For instance, a browser extension requires files like:
+
 ```
 manifest.json
 Content.js
 etc.. 
 ```
+Each file has its own structure and syntax. With idkmng, you can effortlessly initialize projects with the required files and configurations using a simple command, regardless of the specific format needed.
 
-And each one of these files has its own syntactic sugar,
-with idkmng you can use the command line to initialize your projects no matter what syntactic sugar needed!
-for example a web extension:
+For example, to set up a browser extension project, you can run:
 ```sh
 $ idkmng browser_extension
 ```
-and 💥 your files are ready for your initial commit, How amazing is that ? 
-same for any other thing because it is template-based.
+and 💥 your project files will be ready for your initial commit. Isn’t that amazing?
 
-This gives you the ability to customize your projects initialization process as you want for example, you can have more than one template to create a browser extension but they are different in `manifest.json` or whatever.
+idkmng is template-based, allowing you to define multiple templates for the same type of project. This means you can customize the initialization process to suit different requirements, such as variations in manifest.json or other project-specific files.
+
 
 ## Installation
 If you have Rust 🦀 🚀 installed on your machine run the following command:
@@ -86,11 +86,16 @@ content="""
 
 <!-- so it's super easy to write and you can get this structure using <br> ```$ idkmng new```. <br> -->
 
--  `path` represents the path of the file you want to save content into
--  `content` represents the content of the file,<br>
-  and so on,you can have as much files as you want,<br>
-- `path` and `content` can have keywords/placholders that idkmng knows it's value by default. Like `{{$HOME}}` or `{{$CURRENTDIR}}`.
-- some of those default keywords may ask for user input like `{{$PROJECTNAME}}`. 
+---
+
+| **Field** | **Description** |
+|-----------|-----------------|
+| **`path`** | The path of the file where content will be saved. |
+| **`content`** | The content to be written to the file. |
+| **`keywords/placeholders`** | `idkmng` recognizes default keywords and placeholders, such as `{{$HOME}}` or `{{$CURRENTDIR}}`. Some keywords, like `{{$PROJECTNAME}}`, may prompt for user input. |
+| **Multiple Files** | You can include as many files as needed, each with its own `path` and `content`. |
+
+---
 
 Here is a table of defualt keyword for idkmng:
 
@@ -252,6 +257,8 @@ Here is an example:
 example template:
 
 ```toml
+[[files]]
+path="test"
 content="""
 User ID: {{$user.id}}
 User Name: {{$user.name}}
