@@ -260,7 +260,11 @@ Response Status: {{$status}}
 """
 ```
 
-expected output:
+```console
+$ idkmng template --json test.json
+```
+
+Output:
 
 ```
 User ID: 12345
