@@ -6,6 +6,7 @@ mod templates;
 mod utils;
 use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Clone)]
 pub struct Config {
     pub path: String,
     pub templates_path: String,
@@ -36,4 +37,5 @@ pub struct Template {
 pub enum Fns {
     Read,
     Env,
+    None,
 }

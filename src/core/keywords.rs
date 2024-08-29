@@ -1,6 +1,6 @@
 use crate::config::KEYWORDS_FORMAT;
-use crate::Keywords;
 use crate::Config;
+use crate::Keywords;
 use chrono::Datelike;
 use std::{collections::HashMap, env};
 
@@ -17,6 +17,10 @@ impl Keywords {
                 .replace("%s", &name)
                 .replace(":f", "")
         }
+    }
+
+    pub fn strip(keyword: String) -> String {
+        keyword.replace("{{$", "").replace("}}", "")
     }
 
     pub fn init(config: Config) -> HashMap<String, String> {
