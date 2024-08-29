@@ -57,7 +57,7 @@ pub fn find_and_exec_fns(
                 }
 
                 continue;
-            } 
+            }
 
             if let Ok(value) = Fns::exec(function, keyword_name.clone()) {
                 keywords.insert(keyword.clone(), value.clone());
