@@ -1,12 +1,12 @@
+use crate::Config;
 use crate::Keywords;
 use crate::Template;
-use crate::Config;
 use std::collections::HashMap;
 use std::fs;
 use toml::Value;
 
 pub const KEYWORDS_FORMAT: &str = "{{$%s:f}}";
-pub const KEYWORDS_REGEX: &str = r"\{\{\$[^\s}]+(:[^\s}]+)?\}\}";
+pub const KEYWORDS_REGEX: &str = r"\{\{\$[^\s}]+(\.[^\s}]+)*(:[^\s}]+)?\}\}";
 
 impl Config {
     pub fn new(path: &str) -> Self {
@@ -24,7 +24,7 @@ impl Config {
         }
     }
 
-    pub fn init(self) {
+    pub fn init(self, mut keywords: HashMap<String, String>) {
         // this sample is just a template that create config.toml and the new.toml template for the
         // first time, Now something maybe confusing is the "initPJNAME" wtf is it ?
         // That's just a way to workaround auto replacing PROJECTNAME in templates
@@ -62,7 +62,7 @@ content = '''
         .replace("CONFIGPATH", &self.path)
         .replace("TEMPLATES_PATH", &self.templates_path);
 
-        Template::extract(sample, false, self);
+        Template::extract(sample, false, &mut keywords, self, serde_json::Value::Null);
     }
 
     pub fn get_keywords(self) -> HashMap<String, String> {
@@ -80,7 +80,7 @@ content = '''
                 keywords.insert(Keywords::new(key.to_string(), "".to_string()), value_str);
             }
         } else {
-            Self::init(self);
+            Self::init(self, keywords.clone());
         }
 
         keywords
