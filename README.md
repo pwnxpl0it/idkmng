@@ -124,9 +124,6 @@ Functions supported by idkmng:
 
 also keep in mind that once a function gets called on a keyword you can use `{{$TEST:read}}` or `{{$TEST}}` both are going to work and value will be replaced for both of them.
 
-### Load values from json
-
-
 ### Example Templates
 I have a private personal templates repo that I may share soon, but for now I can only provide a few examples
 
@@ -235,10 +232,9 @@ console.log("Hello world!")
 *TIP 💡 *: Info section can have any additional values, it won't get printed but maybe usefull if sharing the template or just as a reference for docs like I did here
 
 </details>
-<!--TODO: Add more examples-->
 
 ### Loading values from json
-You can use json to place values in your template, idkmng will automatically load values from a json file and replace them automatically
+You can use json to replace placeholders in your template, idkmng will automatically load values from a json file and replace them automatically
 
 Here is an example:
 
@@ -255,7 +251,7 @@ Here is an example:
 
 example template:
 
-```
+```toml
 content="""
 User ID: {{$user.id}}
 User Name: {{$user.name}}
@@ -273,9 +269,10 @@ User Email: john.doe@example.com
 Response Status: 200 OK
 ```
 
+<!--TODO: Add more examples-->
+
 ### Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
-
 
 ## Special Keywords 🔧
 You can have your own Keywords for idkmng to replace with desired values!
