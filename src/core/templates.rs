@@ -58,6 +58,7 @@ impl Template {
         config: Config,
         json_data: serde_json::Value,
     ) {
+      
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
 
         if keywords.is_empty() {
