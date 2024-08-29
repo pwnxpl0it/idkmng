@@ -1,7 +1,6 @@
 # idkmng: A TOML based project initializer.
 
-idkmng is a template-based command-line tool that helps to initialize projects with the necessary files and syntax.whatever you're working on, idkmng can set up your project with a single command.
-
+idkmng is a TOML-based project initializer that helps you quickly set up project directories and files according to predefined templates. It's designed for developers who want to streamline their workflow by automating the creation of consistent project structures.
 
 Template-based, with easy [TOML](https://toml.io/en/) support!
 
@@ -124,6 +123,10 @@ Functions supported by idkmng:
 | env    | Replace with value from environment variables     | `{{$PATH:env}}` |
 
 also keep in mind that once a function gets called on a keyword you can use `{{$TEST:read}}` or `{{$TEST}}` both are going to work and value will be replaced for both of them.
+
+### Load values from json
+
+
 ### Example Templates
 I have a private personal templates repo that I may share soon, but for now I can only provide a few examples
 
@@ -234,8 +237,45 @@ console.log("Hello world!")
 </details>
 <!--TODO: Add more examples-->
 
+### Loading values from json
+You can use json to place values in your template, idkmng will automatically load values from a json file and replace them automatically
+
+Here is an example:
+
+```json
+ {
+    "user": {
+        "id": "12345",
+        "name": "John Doe",
+        "email": "john.doe@example.com"
+    },
+    "status": "200 OK"
+}
+```
+
+example template:
+
+```
+content="""
+User ID: {{$user.id}}
+User Name: {{$user.name}}
+User Email: {{$user.email}}
+Response Status: {{$status}}
+"""
+```
+
+expected output:
+
+```
+User ID: 12345
+User Name: John Doe
+User Email: john.doe@example.com
+Response Status: 200 OK
+```
+
 ### Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
+
 
 ## Special Keywords 🔧
 You can have your own Keywords for idkmng to replace with desired values!
