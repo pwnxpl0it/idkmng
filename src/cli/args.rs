@@ -32,7 +32,8 @@ impl Cli {
                 Arg::with_name("json")
                     .help("read key,value pairs from a json file")
                     .long("json")
-                    .takes_value(true),
+                    .takes_value(true)
+                    .requires("template"),
             )
             .subcommand(Command::new("init").about("Creates a template for the current directory"))
             .get_matches()
