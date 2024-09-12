@@ -19,6 +19,7 @@ chrono = "0.4.34"
 clap = { version = "3.2.17", features = ["derive"] }
 colored = "2.0.0"
 indexmap = "2.2.6"
+jq-rs = { version = "0.4.1", features = ["bundled"] }
 promptly = "0.3.1"
 regex = "1.7.1"
 serde = { version = "1.0.152", features = ["serde_derive"] }

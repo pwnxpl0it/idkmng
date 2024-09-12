@@ -241,6 +241,10 @@ console.log("Hello world!")
 ### Loading values from json
 You can use json to replace placeholders in your template, idkmng will automatically load values from a json file and replace them automatically
 
+idkmng uses JSON Query language to load values from json nodes.
+
+This is made possible using Rust's [jq-rs crate 🦀](https://github.com/onelson/jq-rs) which has bindings to libjq.
+
 Here is an example:
 
 ```json
@@ -260,20 +264,22 @@ example template:
 [[files]]
 path="test"
 content="""
-User ID: {{$user.id}}
-User Name: {{$user.name}}
-User Email: {{$user.email}}
-Response Status: {{$status}}
+User ID: {{$.user.id}}
+User Name: {{$.user.name}}
+User Email: {{$.user.email}}
+Response Status: {{$.status[0]}}
 """
 ```
 
-```console
+```sh
 $ idkmng template --json test.json
 ```
 
 Output:
 
-```
+```console
+$ cat test
+
 User ID: 12345
 User Name: John Doe
 User Email: john.doe@example.com

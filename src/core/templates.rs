@@ -47,7 +47,7 @@ impl Template {
         );
 
         let toml_string = toml::to_string_pretty(&template).expect("Failed to create toml string");
-        fs::write(&dest, toml_string).unwrap();
+        fs::write(dest, toml_string).unwrap();
     }
 
     /// This method "extracts" a template, means it takes a template and starts initializing files based that template
@@ -58,7 +58,6 @@ impl Template {
         config: Config,
         json_data: serde_json::Value,
     ) {
-      
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
 
         if keywords.is_empty() {
@@ -130,7 +129,7 @@ impl Template {
             template += ".toml"
         }
 
-        if !fs::read_to_string(&template).is_ok() {
+        if fs::read_to_string(&template).is_err() {
             template = template_path + &template
         }
 
