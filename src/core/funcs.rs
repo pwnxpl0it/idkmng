@@ -46,10 +46,10 @@ impl Fns {
 
                         match func.as_str() {
                             "read" => {
-                                found.insert(keyword_name, (keyword.clone(), Fns::Read));
+                                found.insert(keyword_name, (keyword, Fns::Read));
                             }
                             "env" => {
-                                found.insert(keyword_name, (keyword.clone(), Fns::Env));
+                                found.insert(keyword_name, (keyword, Fns::Env));
                             }
                             _ => {
                                 eprintln!(
@@ -62,7 +62,7 @@ impl Fns {
                         }
                     } else {
                         let keyword_name = Keywords::strip(keyword.clone());
-                        found.insert(keyword_name, (keyword.clone(), Fns::None));
+                        found.insert(keyword_name, (keyword, Fns::None));
                         continue;
                     }
                 }
@@ -77,7 +77,7 @@ impl Fns {
         match func {
             Fns::Read => Ok(prompt(keyword_name).unwrap()),
             Fns::Env => Ok(Self::env(keyword_name)),
-            Fns::None => Ok(keyword_name),
+            Fns::None => Ok(Keywords::new(keyword_name,"".to_string())),
         }
     }
 

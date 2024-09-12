@@ -1,7 +1,7 @@
 use crate::Fns;
 use colored::*;
+use jq_rs;
 use regex::Regex;
-use serde_json::Value;
 use std::{collections::HashMap, fs, path::Path};
 
 pub fn create_dirs(dir: &str) {
@@ -33,15 +33,6 @@ pub fn list_files(dir: &Path) -> Vec<String> {
     files
 }
 
-//NOTE: in future I may create a module to better handle json data
-pub fn json_get_value<'a>(json: &'a Value, indexes: &[&str]) -> Option<&'a Value> {
-    let mut current_value = json;
-    for index in indexes {
-        current_value = current_value.get(index)?;
-    }
-    Some(current_value)
-}
-
 pub fn find_and_exec_fns(
     txt: String,
     mut keywords: HashMap<String, String>,
@@ -50,21 +41,20 @@ pub fn find_and_exec_fns(
 ) -> HashMap<String, String> {
     if let Some(found) = Fns::find(txt, &keywords, &re) {
         for (keyword_name, (keyword, function)) in found {
-            if keyword_name.contains(".") || !keyword.contains(":") {
-                let keys: Vec<&str> = keyword_name.split('.').collect();
-                if let Some(data) = json_get_value(&json_data, &keys) {
-                    keywords.insert(keyword.clone(), data.as_str().unwrap().to_string());
-                }
+            if keyword_name.contains(".") {
+                //TODO: This is not very performant but it works for now UwU
+                let output = jq_rs::run(&keyword_name, &json_data.to_string());
 
+                if let Ok(value) = &output {
+                    //NOTE: This will also replace any quotes in the value
+                    keywords.insert(keyword, value.replace("\"", ""));
+                }
                 continue;
             }
 
-            if let Ok(value) = Fns::exec(function, keyword_name.clone()) {
+            if let Ok(value) = Fns::exec(function, keyword_name) {
                 keywords.insert(keyword.clone(), value.clone());
-                keywords.insert(
-                    Fns::remove_fn_name(keyword.clone(), function),
-                    value.clone(),
-                );
+                keywords.insert(Fns::remove_fn_name(keyword, function), value);
             }
         }
     } else {
