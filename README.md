@@ -240,7 +240,7 @@ console.log("Hello world!")
 
 <!--TODO: Add more examples-->
 
-### Loading values from json
+## Loading values from json
 You can use json to replace placeholders in your template, idkmng will automatically load values from a json file and replace them automatically
 
 idkmng uses JSON Query language to load values from json nodes.
@@ -293,7 +293,7 @@ Response Status: 200 OK
 > [Why?](https://github.com/onelson/jq-rs?tab=readme-ov-file#a-note-on-performance)
 
 
-### Automated Template generation 🚀
+## Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
 
 ## Special Keywords 🔧
