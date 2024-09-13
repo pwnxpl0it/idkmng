@@ -6,7 +6,7 @@ use std::fs;
 use toml::Value;
 
 pub const KEYWORDS_FORMAT: &str = "{{$%s:f}}";
-pub const KEYWORDS_REGEX: &str = r"\{\{\$[^\s}]+(\.[^\s}]+)*(:[^\s}]+)?\}\}";
+pub const KEYWORDS_REGEX: &str = r"\{\{\$.*?\}\}";
 
 impl Config {
     pub fn new(path: &str) -> Self {
