@@ -41,15 +41,19 @@ pub fn find_and_exec_fns(
 ) -> HashMap<String, String> {
     if let Some(found) = Fns::find(txt, &keywords, &re) {
         for (keyword_name, (keyword, function)) in found {
-            if keyword_name.contains(".") {
-                //TODO: This is not very performant but it works for now UwU
-                let output = jq_rs::run(&keyword_name, &json_data.to_string());
+            //HACK: Just a bit of optimization, if the json_data is null then it doesn't make sense to run jq
+            // because doing so is every expensive and here we are dealing with dynamic queries
+            if !json_data.is_null() {
+                if keyword_name.contains(".") {
+                    //TODO: This is not very performant but it works for now UwU
+                    let output = jq_rs::run(&keyword_name, &json_data.to_string());
 
-                if let Ok(value) = &output {
-                    //NOTE: This will also replace any quotes in the value
-                    keywords.insert(keyword, value.replace("\"", ""));
+                    if let Ok(value) = &output {
+                        //NOTE: This will also replace any quotes in the value
+                        keywords.insert(keyword, value.replace("\"", ""));
+                    }
+                    continue;
                 }
-                continue;
             }
 
             if let Ok(value) = Fns::exec(function, keyword_name) {
