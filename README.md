@@ -250,13 +250,13 @@ This is made possible using Rust's [jq-rs crate 🦀](https://github.com/onelson
 Here is an example:
 
 ```json
- {
-    "user": {
-        "id": "12345",
-        "name": "John Doe",
-        "email": "john.doe@example.com"
-    },
-    "status": "200 OK"
+{
+	"user": {
+		"id": "12345",
+		"name": "John Doe",
+		"email": "john.doe@example.com"
+	},
+	"status": ["200 OK"]
 }
 ```
 
