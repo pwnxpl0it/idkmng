@@ -33,7 +33,7 @@ pub fn list_files(dir: &Path) -> Vec<String> {
     files
 }
 
-pub fn find_and_exec_fns(
+pub fn find_and_exec(
     txt: String,
     mut keywords: HashMap<String, String>,
     re: Regex,
