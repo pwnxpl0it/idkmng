@@ -18,9 +18,7 @@ impl std::fmt::Display for Fns {
 }
 
 impl Fns {
-    /// This method removes function name from keywords,
-    /// Example: {{$hi:read}}
-    /// returns: {{$hi}}
+    
     pub fn remove_fn_name(keyword: String, func_name: Fns) -> String {
         keyword.replace(&format!(":{}", func_name), "")
     }
@@ -77,7 +75,7 @@ impl Fns {
         match func {
             Fns::Read => Ok(prompt(keyword_name).unwrap()),
             Fns::Env => Ok(Self::env(keyword_name)),
-            Fns::None => Ok(Keywords::new(keyword_name,"".to_string())),
+            Fns::None => Ok(Keywords::new(keyword_name, None)),
         }
     }
 

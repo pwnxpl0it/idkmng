@@ -77,7 +77,7 @@ content = '''
                     Value::String(s) => s.clone(),
                     _ => value.to_string(),
                 };
-                keywords.insert(Keywords::new(key.to_string(), "".to_string()), value_str);
+                keywords.insert(Keywords::new(key.to_string(), None), value_str);
             }
         } else {
             Self::init(self, keywords.clone());
