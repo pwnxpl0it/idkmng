@@ -7,7 +7,6 @@ use regex::Regex;
 use std::{collections::HashMap, fs, path::Path};
 
 impl Template {
-    /// This method returns a new Template instance, it takes `Information` and a vector of `File`.
     fn new(info_: Information, files_: Vec<File>) -> Self {
         Self {
             info: Some(info_),
@@ -15,13 +14,7 @@ impl Template {
         }
     }
 
-    /// This method basically generates a new Template and saves it
-    /// It utilizes the Self::new() method, gives it an Empty `Information` Instance and the
-    /// Vector it created by listing all files in the current working directory
     pub fn generate(dest: &str) {
-        // get the current directory name by utilizing Keywords::init() -> a table of default
-        // Keywords/Values for idkmng, that includes current directory
-
         let mut files: Vec<File> = Vec::new(); // Create a new Vector of File
 
         list_files(Path::new("./")).iter().for_each(|file| {
@@ -50,7 +43,6 @@ impl Template {
         fs::write(dest, toml_string).unwrap();
     }
 
-    /// This method "extracts" a template, means it takes a template and starts initializing files based that template
     pub fn extract(
         template: String,
         is_file: bool,
@@ -69,14 +61,14 @@ impl Template {
         let files = sample.files;
         let mut project = String::from("");
         files.into_iter().for_each(|file| {
-            *keywords = find_and_exec_fns(
+            *keywords = find_and_exec(
                 file.content.clone(),
                 keywords.clone(),
                 re.clone(),
                 json_data.clone(),
             );
 
-            *keywords = find_and_exec_fns(
+            *keywords = find_and_exec(
                 file.path.clone(),
                 keywords.clone(),
                 re.clone(),
