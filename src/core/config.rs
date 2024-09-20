@@ -16,7 +16,7 @@ impl Config {
         config_dir.pop();
 
         //NOTE: maybe templates path should be parsed from config.toml itself??
-        let templates = config_dir.join("/") + "/templates";
+        let templates = config_dir.join("/") + "/templates/";
 
         Config {
             path: config_path,
