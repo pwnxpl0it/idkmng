@@ -74,7 +74,7 @@ impl Keywords {
             chrono::Local::now().day().to_string(),
         );
 
-        let other_keywords = config.expand();
+        let other_keywords = config.get_keywords();
 
         keywords.extend(other_keywords);
         keywords

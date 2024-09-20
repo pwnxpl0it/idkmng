@@ -65,7 +65,7 @@ content = '''
         Template::extract(sample, false, &mut keywords, serde_json::Value::Null);
     }
 
-    pub fn expand(self) -> HashMap<String, String> {
+    pub fn get_keywords(self) -> HashMap<String, String> {
         let mut keywords = HashMap::new();
         if let Ok(toml_str) = fs::read_to_string(&self.path) {
             let toml_val: Value = toml::from_str(&toml_str).unwrap();
