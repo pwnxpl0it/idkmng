@@ -47,14 +47,9 @@ impl Template {
         template: String,
         is_file: bool,
         keywords: &mut HashMap<String, String>,
-        config: Config,
         json_data: serde_json::Value,
     ) {
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
-
-        if keywords.is_empty() {
-            *keywords = Keywords::init(config);
-        }
 
         let sample = Self::parse(&template, is_file);
 

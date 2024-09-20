@@ -36,7 +36,7 @@ fn main() {
             Template::show_info(&Template::parse(&template, true));
         }
 
-        Template::extract(template, true, &mut keywords, config, json_data);
+        Template::extract(template, true, &mut keywords, json_data);
     } else {
         println!(
             "{} {}",
