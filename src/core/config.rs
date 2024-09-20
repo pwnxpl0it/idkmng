@@ -16,7 +16,7 @@ impl Config {
         config_dir.pop();
 
         //NOTE: maybe templates path should be parsed from config.toml itself??
-        let templates = config_dir.join("/") + "/templates/";
+        let templates = config_dir.join("/") + "/templates";
 
         Config {
             path: config_path,
@@ -62,7 +62,7 @@ content = '''
         .replace("CONFIGPATH", &self.path)
         .replace("TEMPLATES_PATH", &self.templates_path);
 
-        Template::extract(sample, false, &mut keywords, self, serde_json::Value::Null);
+        Template::extract(sample, false, &mut keywords, serde_json::Value::Null);
     }
 
     pub fn get_keywords(self) -> HashMap<String, String> {
