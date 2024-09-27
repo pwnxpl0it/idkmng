@@ -10,16 +10,16 @@ use std::{collections::HashMap, env};
 impl std::fmt::Display for Fns {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match *self {
-            Fns::Read => write!(f, "read"),
-            Fns::Env => write!(f, "env"),
-            Fns::None => write!(f, ""),
+            Self::Read => write!(f, "read"),
+            Self::Env => write!(f, "env"),
+            Self::None => write!(f, ""),
         }
     }
 }
 
 impl Fns {
     
-    pub fn remove_fn_name(keyword: String, func_name: Fns) -> String {
+    pub fn remove_fn_name(keyword: String, func_name: Self) -> String {
         keyword.replace(&format!(":{}", func_name), "")
     }
 
@@ -28,7 +28,7 @@ impl Fns {
         txt: String,
         keywords: &HashMap<String, String>,
         re: &Regex,
-    ) -> Option<IndexMap<String, (String, Fns)>> {
+    ) -> Option<IndexMap<String, (String, Self)>> {
         let mut found = IndexMap::new();
 
         for key in re.captures_iter(&txt) {
@@ -44,10 +44,10 @@ impl Fns {
 
                         match func.as_str() {
                             "read" => {
-                                found.insert(keyword_name, (keyword, Fns::Read));
+                                found.insert(keyword_name, (keyword, Self::Read));
                             }
                             "env" => {
-                                found.insert(keyword_name, (keyword, Fns::Env));
+                                found.insert(keyword_name, (keyword, Self::Env));
                             }
                             _ => {
                                 eprintln!(
@@ -60,7 +60,7 @@ impl Fns {
                         }
                     } else {
                         let keyword_name = Keywords::strip(keyword.clone());
-                        found.insert(keyword_name, (keyword, Fns::None));
+                        found.insert(keyword_name, (keyword, Self::None));
                         continue;
                     }
                 }
@@ -71,11 +71,11 @@ impl Fns {
     }
 
     /// This method executes allowed functions such as: read,env
-    pub fn exec(func: Fns, keyword_name: String) -> Result<String, String> {
+    pub fn exec(func: Self, keyword_name: String) -> Result<String, String> {
         match func {
-            Fns::Read => Ok(prompt(keyword_name).unwrap()),
-            Fns::Env => Ok(Self::env(keyword_name)),
-            Fns::None => Ok(Keywords::new(keyword_name, None)),
+            Self::Read => Ok(prompt(keyword_name).unwrap()),
+            Self::Env => Ok(Self::env(keyword_name)),
+            Self::None => Ok(Keywords::new(keyword_name, None)),
         }
     }
 
