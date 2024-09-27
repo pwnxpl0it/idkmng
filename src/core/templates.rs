@@ -2,6 +2,7 @@ use crate::config::*;
 use crate::utils::*;
 use crate::*;
 use colored::Colorize;
+use liquid;
 use promptly::prompt;
 use regex::Regex;
 use std::{collections::HashMap, fs, path::Path};
@@ -43,6 +44,18 @@ impl Template {
         fs::write(dest, toml_string).unwrap();
     }
 
+    pub fn liquify(string: &str) -> String {
+        let parser = liquid::ParserBuilder::with_stdlib().build().unwrap();
+        let empty_globals = liquid::Object::new();
+        let new_template = parser
+            .parse(&string)
+            .unwrap()
+            .render(&empty_globals)
+            .unwrap();
+
+        new_template
+    }
+
     pub fn extract(
         template: String,
         is_file: bool,
@@ -50,11 +63,11 @@ impl Template {
         json_data: serde_json::Value,
     ) {
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
-
         let sample = Self::parse(&template, is_file);
-
         let files = sample.files;
         let mut project = String::from("");
+        let mut output = String::from("");
+
         files.into_iter().for_each(|file| {
             *keywords = find_and_exec(
                 file.content.clone(),
@@ -87,10 +100,11 @@ impl Template {
                 )))
             }
 
-            write_content(
-                &shellexpand::tilde(&path),
-                Keywords::replace_keywords(keywords.to_owned(), file.content),
-            )
+            output = Keywords::replace_keywords(keywords.to_owned(), file.content);
+
+            let liquified = Self::liquify(&output);
+
+            write_content(&shellexpand::tilde(&path), liquified)
         });
     }
 

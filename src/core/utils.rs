@@ -57,8 +57,21 @@ pub fn find_and_exec(
             }
 
             if let Ok(value) = Fns::exec(function, keyword_name) {
-                keywords.insert(keyword.clone(), value.clone());
-                keywords.insert(Fns::remove_fn_name(keyword, function), value);
+                match function {
+                    Fns::None => {
+                        println!(
+                            "\n[{}] {}: {}\n",
+                            "WRN".yellow(),
+                            "Value not found".yellow(),
+                            keyword.green()
+                        );
+                        keywords.insert(keyword, "".to_string());
+                    }
+                    _ => {
+                        keywords.insert(keyword.clone(), value.clone());
+                        keywords.insert(Fns::remove_fn_name(keyword, function), value);
+                    }
+                }
             }
         }
     } else {
