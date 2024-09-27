@@ -18,7 +18,6 @@ impl std::fmt::Display for Fns {
 }
 
 impl Fns {
-    
     pub fn remove_fn_name(keyword: String, func_name: Self) -> String {
         keyword.replace(&format!(":{}", func_name), "")
     }

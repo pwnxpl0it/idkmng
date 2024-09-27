@@ -29,10 +29,7 @@ impl Keywords {
             Self::new(String::from("HOME"), None),
             env::var("HOME").unwrap(),
         );
-        keywords.insert(
-            Self::new(String::from("PROJECTNAME"), None),
-            "".to_string(),
-        );
+        keywords.insert(Self::new(String::from("PROJECTNAME"), None), "".to_string());
         keywords.insert(
             Self::new(String::from("CURRENTDIR"), None),
             env::current_dir()
