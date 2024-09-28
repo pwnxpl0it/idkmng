@@ -292,7 +292,7 @@ Response Status: 200 OK
 > Although this is a cool feature to automate user inputs, It comes with performance costs
 > [Why?](https://github.com/onelson/jq-rs?tab=readme-ov-file#a-note-on-performance)
 
-## **Liquid Templating Support**
+## Liquid Templating Support 🧪
 
 `idkmng` now supports [Liquid](https://shopify.github.io/liquid/) templating alongside its own custom syntax. This allows you to benefit from Liquid's logic (loops, conditionals) while continuing to use `idkmng`'s powerful keyword replacement.
 
