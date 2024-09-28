@@ -292,6 +292,34 @@ Response Status: 200 OK
 > Although this is a cool feature to automate user inputs, It comes with performance costs
 > [Why?](https://github.com/onelson/jq-rs?tab=readme-ov-file#a-note-on-performance)
 
+## **Liquid Templating Support**
+
+`idkmng` now supports [Liquid](https://shopify.github.io/liquid/) templating alongside its own custom syntax. This allows you to benefit from Liquid's logic (loops, conditionals) while continuing to use `idkmng`'s powerful keyword replacement.
+
+#### **Example:**
+```toml
+[[files]]
+path = "output.txt"
+content = """
+{% for i in (1..5) %}
+Example! {{ i }} {{ "{{$file:read}}" | append: ".html" }}
+{% endfor %}
+"""
+```
+
+- `idkmng` replaces `{{$file:read}}` with user input.
+- Liquid handles loops and string manipulation.
+
+#### **Result:**
+```
+Example! 1 ff.html
+Example! 2 ff.html
+Example! 3 ff.html
+Example! 4 ff.html
+Example! 5 ff.html
+```
+
+With this integration, you can create dynamic and flexible templates that combine the strengths of both `idkmng` and Liquid.
 
 ## Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
