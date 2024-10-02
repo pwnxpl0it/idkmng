@@ -22,7 +22,7 @@ impl Fns {
         keyword.replace(&format!(":{}", func_name), "")
     }
 
-    /// This method finds `functions` in a string based on a Regex pattern that matches keywords with functions
+    /// This method finds `functions` in a string based on a Regex pattern that matches keywords
     pub fn find(
         txt: String,
         keywords: &HashMap<String, String>,
@@ -35,13 +35,15 @@ impl Fns {
                 let keyword = key.as_str().to_string();
 
                 if !keywords.contains_key(&keyword) {
-                    let data = keyword.as_str().split(':').collect::<Vec<_>>();
+                    let new_keyword = Keywords::strip(keyword.clone()).trim().to_string();
+                    let data = new_keyword.split(':').collect::<Vec<_>>();
 
                     if data.len() == 2 {
                         let keyword_name = Keywords::strip(data[0].to_string());
-                        let func = data[1].replace("}}", "");
+                        let func = data[1].trim();
 
-                        match func.as_str() {
+                        //TODO: handle the whitespaces better than this
+                        match func {
                             "read" => {
                                 found.insert(keyword_name, (keyword, Self::Read));
                             }
