@@ -1,6 +1,4 @@
 use clap::{App, Arg, Command};
-//use idkmng::{Config, Template};
-//use std::fs;
 
 pub struct Cli {}
 
