@@ -1,11 +1,13 @@
 use clap::{App, Arg, Command};
+//use idkmng::{Config, Template};
+//use std::fs;
 
 pub struct Cli {}
 
 impl Cli {
     pub fn parse() -> clap::ArgMatches {
         App::new("idkmng")
-            .about("TOML based project initializer")
+            .about("A fast and flexible project initializer using TOML-based templates. Automate project setup, file generation, and reporting workflows with JSON input, dynamic placeholders, and optional Liquid support.")
             .version("2.0")
             .author("Mohamed Tarek @pwnxpl0it")
             .arg(
@@ -33,6 +35,13 @@ impl Cli {
                     .help("read key,value pairs from a json file")
                     .long("json")
                     .takes_value(true)
+                    .requires("template"),
+            )
+            .arg(
+                Arg::with_name("git")
+                    .help("Initialize a git repo, this works regardless of template options")
+                    .long("git")
+                    .takes_value(false)
                     .requires("template"),
             )
             .subcommand(Command::new("init").about("Creates a template for the current directory"))
