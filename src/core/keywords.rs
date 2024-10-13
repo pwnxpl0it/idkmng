@@ -1,6 +1,5 @@
-use crate::config::KEYWORDS_FORMAT;
-use crate::Config;
 use crate::Keywords;
+use crate::templates::KEYWORDS_FORMAT;
 use chrono::Datelike;
 use std::{collections::HashMap, env};
 
@@ -23,7 +22,7 @@ impl Keywords {
         keyword.replace("{{$", "").replace("}}", "")
     }
 
-    pub fn init(config: Config) -> HashMap<String, String> {
+    pub fn init() -> HashMap<String, String> {
         let mut keywords = HashMap::new();
         keywords.insert(
             Self::new(String::from("HOME"), None),
@@ -71,9 +70,6 @@ impl Keywords {
             chrono::Local::now().day().to_string(),
         );
 
-        let other_keywords = config.get_keywords();
-
-        keywords.extend(other_keywords);
         keywords
     }
 
