@@ -1,16 +1,10 @@
-pub mod config;
 mod file;
 pub mod funcs;
 pub mod keywords;
+mod options;
 mod templates;
 mod utils;
 use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Clone)]
-pub struct Config {
-    pub path: String,
-    pub templates_path: String,
-}
 
 pub struct Keywords {}
 
@@ -22,6 +16,13 @@ pub struct Information {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct Options {
+    pub git: bool,
+    pub json_data: Option<serde_json::Value>,
+    pub project_root: String,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct File {
     pub path: String,
     pub content: String,
@@ -30,10 +31,11 @@ pub struct File {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Template {
     pub info: Option<Information>,
-    pub files: Vec<File>,
+    pub options: Option<Options>,
+    pub files: Option<Vec<File>>,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Debug, Clone, Copy)]
 pub enum Fns {
     Read,
     Env,
