@@ -1,27 +1,50 @@
-use crate::config::*;
 use crate::utils::*;
 use crate::*;
 use colored::Colorize;
-use liquid;
 use promptly::prompt;
 use regex::Regex;
 use std::{collections::HashMap, fs, path::Path};
 
-impl Template {
-    fn new(info_: Information, files_: Vec<File>) -> Self {
+pub const KEYWORDS_FORMAT: &str = "{{$%s:f}}";
+pub const KEYWORDS_REGEX: &str = r"\{\{\$.*?\}\}";
+
+impl Default for Template {
+    fn default() -> Self {
         Self {
-            info: Some(info_),
-            files: files_,
+            options: Some(Options::default()),
+            info: None,
+            files: None,
         }
+    }
+}
+
+impl Template {
+    pub fn set_info(&mut self, info: Information) {
+        self.info = Some(info);
+    }
+
+    pub fn set_files(&mut self, files: Vec<File>) {
+        self.files = Some(files);
+    }
+
+    pub fn set_options(&mut self, options: Options) {
+        self.options = Some(options);
+    }
+
+    pub fn dump_options(&mut self) -> Option<Options> {
+        if self.options.is_none() {
+            return None;
+        }
+        Some(self.options.clone().unwrap())
     }
 
     pub fn generate(dest: &str) {
-        let mut files: Vec<File> = Vec::new(); // Create a new Vector of File
+        let mut files: Vec<File> = Vec::new();
 
         list_files(Path::new("./")).iter().for_each(|file| {
             //TODO: Add more to ignore list maybe adding a --ignore flag will be good
             if !file.contains(".git") {
-                let file = File::new(file.to_string().replace("./", ""), {
+                let file = File::from(file.to_string().replace("./", ""), {
                     match fs::read_to_string(file) {
                         Ok(content) => content,
                         Err(e) => panic!("{}:{}", file.red().bold(), e),
@@ -31,14 +54,11 @@ impl Template {
             }
         });
 
-        let template = Self::new(
-            Information {
-                name: Some(String::from("")),
-                author: Some(String::from("")),
-                description: Some(String::from("")),
-            },
-            files,
-        );
+        let template = Template {
+            info: None,
+            files: Some(files),
+            options: None,
+        };
 
         let toml_string = toml::to_string_pretty(&template).expect("Failed to create toml string");
         fs::write(dest, toml_string).unwrap();
@@ -47,46 +67,43 @@ impl Template {
     pub fn liquify(string: &str) -> String {
         let parser = liquid::ParserBuilder::with_stdlib().build().unwrap();
         let empty_globals = liquid::Object::new();
-        let new_template = parser
-            .parse(&string)
+
+        parser
+            .parse(string)
             .unwrap()
             .render(&empty_globals)
-            .unwrap();
-
-        new_template
+            .unwrap()
     }
 
-    pub fn extract(
-        template: String,
-        is_file: bool,
-        keywords: &mut HashMap<String, String>,
-        json_data: serde_json::Value,
-    ) {
-        let re = Regex::new(KEYWORDS_REGEX).unwrap();
-        let sample = Self::parse(&template, is_file);
-        let files = sample.files;
+    pub fn extract(mut self, keywords: &mut HashMap<String, String>) {
         let mut project = String::from("");
         let mut output = String::from("");
+        let re = Regex::new(KEYWORDS_REGEX).unwrap();
+        let files = self.files.clone().expect("No files table");
+        let mut options = self.dump_options().expect("No options");
 
         files.into_iter().for_each(|file| {
             *keywords = find_and_exec(
                 file.content.clone(),
                 keywords.clone(),
                 re.clone(),
-                json_data.clone(),
+                options.json_data.clone().unwrap_or(serde_json::Value::Null),
             );
 
             *keywords = find_and_exec(
                 file.path.clone(),
                 keywords.clone(),
                 re.clone(),
-                json_data.clone(),
+                options.json_data.clone().unwrap_or(serde_json::Value::Null),
             );
 
             if file.path.contains("{{$PROJECTNAME}}") || file.content.contains("{{$PROJECTNAME}}") {
                 if project.is_empty() {
                     project = prompt("Project name").unwrap();
                     keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
+                    if options.project_root == "{{$PROJECTNAME}}" {
+                        options.set_project_root(&project);
+                    }
                 }
             }
 
@@ -106,39 +123,10 @@ impl Template {
 
             write_content(&shellexpand::tilde(&path), liquified)
         });
+
+        Options::handle_options(options);
     }
 
-    /// Parse a Template
-    pub fn parse(template: &str, is_file: bool) -> Self {
-        #[allow(unused_assignments)]
-        let mut content = String::from("");
-        match is_file {
-            true => {
-                content = fs::read_to_string(template)
-                    .unwrap_or_else(|_| panic!("Failed to Parse {}", template));
-            }
-            false => content = template.to_string(),
-        }
-
-        toml::from_str(&content).unwrap()
-    }
-
-    /// This method validates template path, in other words it just checks if the template is in
-    /// the current working directory,if not it uses the default templates directory, also automatically adds .toml
-    pub fn validate(mut template: String, template_path: String) -> String {
-        if !template.contains(".toml") {
-            template += ".toml"
-        }
-
-        if fs::read_to_string(&template).is_err() {
-            template = template_path + &template
-        }
-
-        template
-    }
-
-    /// This method shows information about current template, basically Reads them from Information
-    /// section in the template TOML file
     pub fn show_info(template: &Self) {
         match &template.info {
             Some(information) => println!(
