@@ -321,6 +321,21 @@ Example! 5 ff.html
 
 With this integration, you can create dynamic and flexible templates that combine the strengths of both `idkmng` and Liquid.
 
+## Git Support 🐙
+Initialize Git during project creation by using:
+
+```console
+$ idkmng /path/to/template --git
+```
+
+Or include Git support in the template itself:
+
+```toml
+[options]
+git=true
+project_root="{{$PROJECTNAME}}"
+```
+
 ## Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
 
