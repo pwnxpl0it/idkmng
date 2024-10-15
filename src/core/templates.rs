@@ -97,7 +97,10 @@ impl Template {
                 options.json_data.clone().unwrap_or(serde_json::Value::Null),
             );
 
-            if file.path.contains("{{$PROJECTNAME}}") || file.content.contains("{{$PROJECTNAME}}") {
+            if file.path.contains("{{$PROJECTNAME}}")
+                || file.content.contains("{{$PROJECTNAME}}")
+                || options.project_root.contains("{{$PROJECTNAME}}")
+            {
                 if project.is_empty() {
                     project = prompt("Project name").unwrap();
                     keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
