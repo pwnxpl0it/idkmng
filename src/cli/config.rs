@@ -4,13 +4,11 @@ use std::collections::HashMap;
 use std::fs;
 use toml::Value;
 
-
 #[derive(Debug, Clone)]
 pub struct Config {
     pub path: String,
     pub templates_path: String,
 }
-
 
 impl Config {
     pub fn new(path: &str) -> Self {
@@ -32,7 +30,7 @@ impl Config {
         // this sample is just a template that create config.toml and the new.toml template for the
         // first time, Now something maybe confusing is the "initPJNAME" wtf is it ?
         // That's just a way to workaround auto replacing PROJECTNAME in templates
-        let conf_template= r#"
+        let conf_template = r#"
 [[files]]
 path = 'TEMPLATES_PATH/new.toml'
 content = '''
@@ -92,4 +90,3 @@ content = '''
         keywords
     }
 }
-

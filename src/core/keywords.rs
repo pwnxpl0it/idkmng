@@ -1,5 +1,5 @@
-use crate::Keywords;
 use crate::templates::KEYWORDS_FORMAT;
+use crate::Keywords;
 use chrono::Datelike;
 use std::{collections::HashMap, env};
 
