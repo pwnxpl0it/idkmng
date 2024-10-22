@@ -42,7 +42,6 @@ impl Fns {
                         let keyword_name = Keywords::strip(data[0].to_string());
                         let func = data[1].trim();
 
-                        //TODO: handle the whitespaces better than this
                         match func {
                             "read" => {
                                 found.insert(keyword_name, (keyword, Self::Read));
@@ -76,7 +75,7 @@ impl Fns {
         match func {
             Self::Read => Ok(prompt(keyword_name).unwrap()),
             Self::Env => Ok(Self::env(keyword_name)),
-            Self::None => Ok(Keywords::new(keyword_name, None)),
+            Self::None => Ok(Keywords::from(keyword_name, None)),
         }
     }
 
