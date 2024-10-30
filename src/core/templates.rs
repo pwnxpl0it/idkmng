@@ -32,9 +32,7 @@ impl Template {
     }
 
     pub fn dump_options(&mut self) -> Option<Options> {
-        if self.options.is_none() {
-            return None;
-        }
+        self.options.as_ref()?;
         Some(self.options.clone().unwrap())
     }
 
@@ -97,16 +95,15 @@ impl Template {
                 options.json_data.clone().unwrap_or(serde_json::Value::Null),
             );
 
-            if file.path.contains("{{$PROJECTNAME}}")
+            if (file.path.contains("{{$PROJECTNAME}}")
                 || file.content.contains("{{$PROJECTNAME}}")
-                || options.project_root.contains("{{$PROJECTNAME}}")
+                || options.project_root.contains("{{$PROJECTNAME}}"))
+                && project.is_empty()
             {
-                if project.is_empty() {
-                    project = prompt("Project name").unwrap();
-                    keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
-                    if options.project_root == "{{$PROJECTNAME}}" {
-                        options.set_project_root(&project);
-                    }
+                project = prompt("Project name").unwrap();
+                keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
+                if options.project_root == "{{$PROJECTNAME}}" {
+                    options.set_project_root(&project);
                 }
             }
 
@@ -127,7 +124,8 @@ impl Template {
             write_content(&shellexpand::tilde(&path), liquified)
         });
 
-        Options::handle_options(options);
+        //TODO: Move this to cli/main.rs
+        options.handle_options();
     }
 
     pub fn show_info(template: &Self) {
