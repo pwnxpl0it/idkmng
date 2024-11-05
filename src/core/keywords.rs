@@ -1,7 +1,8 @@
-use crate::templates::KEYWORDS_FORMAT;
 use crate::Keywords;
 use chrono::Datelike;
 use std::{collections::HashMap, env};
+
+pub const KEYWORDS_FORMAT: &str = "{{$%s:f}}";
 
 impl Keywords {
     pub fn from(name: String, function: Option<String>) -> String {

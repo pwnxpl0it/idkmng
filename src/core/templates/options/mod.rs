@@ -1,6 +1,6 @@
-use crate::options::git;
 use crate::Options;
 use colored::*;
+pub mod git;
 
 impl Default for Options {
     fn default() -> Self {
@@ -25,7 +25,7 @@ impl Options {
         self.project_root = project_root.to_string();
     }
 
-    pub fn handle_options(self) {
+    pub fn handle(self) {
         if self.git {
             if self.project_root.is_empty() {
                 println!(

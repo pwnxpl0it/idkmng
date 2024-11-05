@@ -1,11 +1,20 @@
 use crate::utils::*;
-use crate::*;
 use colored::Colorize;
 use promptly::prompt;
 use regex::Regex;
+use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, fs, path::Path};
+pub mod file;
+pub mod options;
+use crate::*;
 
-pub const KEYWORDS_FORMAT: &str = "{{$%s:f}}";
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct Options {
+    pub git: bool,
+    pub json_data: Option<serde_json::Value>,
+    pub project_root: String,
+}
+
 pub const KEYWORDS_REGEX: &str = r"\{\{\$.*?\}\}";
 
 impl Default for Template {
@@ -62,6 +71,7 @@ impl Template {
         fs::write(dest, toml_string).unwrap();
     }
 
+    //TODO: maybe move this to utils or just crate a submodule for it
     pub fn liquify(string: &str) -> String {
         let parser = liquid::ParserBuilder::with_stdlib().build().unwrap();
         let empty_globals = liquid::Object::new();
@@ -81,14 +91,14 @@ impl Template {
         let mut options = self.dump_options().expect("No options");
 
         files.into_iter().for_each(|file| {
-            *keywords = find_and_exec(
+            *keywords = Fns::find_and_exec(
                 file.content.clone(),
                 keywords.clone(),
                 re.clone(),
                 options.json_data.clone().unwrap_or(serde_json::Value::Null),
             );
 
-            *keywords = find_and_exec(
+            *keywords = Fns::find_and_exec(
                 file.path.clone(),
                 keywords.clone(),
                 re.clone(),
@@ -101,10 +111,8 @@ impl Template {
                 && project.is_empty()
             {
                 project = prompt("Project name").unwrap();
+                options.set_project_root(&project);
                 keywords.insert("{{$PROJECTNAME}}".to_string(), project.to_owned());
-                if options.project_root == "{{$PROJECTNAME}}" {
-                    options.set_project_root(&project);
-                }
             }
 
             let dir = file.path.split('/').collect::<Vec<_>>();
@@ -124,8 +132,7 @@ impl Template {
             write_content(&shellexpand::tilde(&path), liquified)
         });
 
-        //TODO: Move this to cli/main.rs
-        options.handle_options();
+        options.handle();
     }
 
     pub fn show_info(template: &Self) {

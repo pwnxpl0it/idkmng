@@ -1,5 +1,4 @@
-use crate::Fns;
-use crate::Keywords;
+use crate::{Fns, Keywords};
 use colored::*;
 use core::fmt;
 use indexmap::IndexMap;
@@ -82,5 +81,50 @@ impl Fns {
     /// This function reads from environment variables and returns the value as a string
     fn env(name: String) -> String {
         env::var(name).unwrap()
+    }
+
+    pub fn find_and_exec(
+        txt: String,
+        mut keywords: HashMap<String, String>,
+        re: Regex,
+        json_data: serde_json::Value,
+    ) -> HashMap<String, String> {
+        if let Some(found) = Self::find(txt, &keywords, &re) {
+            for (keyword_name, (keyword, function)) in found {
+                //HACK: Just a bit of optimization, if the json_data is null then it doesn't make sense to run jq
+                // because doing so is every expensive and here we are dealing with dynamic queries
+                if !json_data.is_null() && keyword_name.contains(".") {
+                    //TODO: This is not very performant but it works for now UwU
+                    let output = jq_rs::run(&keyword_name, &json_data.to_string());
+
+                    if let Ok(value) = output {
+                        //NOTE: This will also replace any quotes in the value
+                        keywords.insert(keyword, value.replace("\"", ""));
+                    }
+                    continue;
+                }
+
+                if let Ok(value) = Self::exec(function, keyword_name) {
+                    match function {
+                        Self::None => {
+                            println!(
+                                "\n[{}] {}: {}",
+                                "WRN".yellow(),
+                                "Value not found".yellow(),
+                                keyword.green()
+                            );
+                            keywords.insert(keyword, "".to_string());
+                        }
+                        _ => {
+                            keywords.insert(keyword.clone(), value.clone());
+                            keywords.insert(Self::remove_fn_name(keyword, function), value);
+                        }
+                    }
+                }
+            }
+        } else {
+            // Ignore
+        }
+        keywords
     }
 }

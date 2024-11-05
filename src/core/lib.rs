@@ -1,12 +1,10 @@
-mod file;
 pub mod funcs;
 pub mod keywords;
-mod options;
 mod templates;
 mod utils;
-pub use options::Options;
 use serde::{Deserialize, Serialize};
 pub struct Keywords {}
+pub use templates::Options;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Information {
