@@ -82,6 +82,8 @@ Content of file 2
 
 placeholders have a generic format of `{{$keyword}}`
 
+Here is a table of default placeholders and their values: 
+
 | Keyword/placeholder   | Value     | Example          |
 |--------------- | ---------------  | ---------------  |
 | PROJECTNAME   | Asks for project name |                   |
