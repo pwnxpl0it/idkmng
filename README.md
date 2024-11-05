@@ -41,8 +41,7 @@ Replace <RELEASE> with the version number or tag of the release you want to inst
 now you should be able to run `idkmng` in your terminal!
 
 ## Creating a template 📜
-<!--There is a template for creating a template! 
-it is located in templates directory/template.toml
+There is a template for creating a template! 
 just run the following command! 
 ```sh
 $ idkmng new
@@ -50,12 +49,7 @@ $ idkmng new
 enter template name and you should have one, it will go inside `~/.config/idkmng/templates/TEMPLATENAME.toml`
 also you can edit that Template too to create you own template that creates a template 🎉,<br>
 
-note that the template `info` section can be totally ignored, straight to the point where you only create files and directories you want!<br>
--->
 Default templates path is `~/.config/idkmng/templates`<br>
-
-> [!NOTE]
-> You can use -c option to override the config path if you needed to.
 
 The template structure is like the following:
 ```toml
@@ -68,40 +62,29 @@ author = ""
 path="/path/to/file1"
 content="""
 
+Content of file 1
+
 """
 
 [[files]] # file2
 path="/path/to/file2"
 content="""
 
-#etc...
+Content of file 2
+
 """
+
+#etc...
 ```
 
-> [!TIP]
-> Info section is not required and can be ignored
+> [!INFO]
+> Info section is not required and can be removed
 
-> [!NOTE]
-> You can use -q (quiet) option to hide template information even if it is provided in the template
-
-<!-- so it's super easy to write and you can get this structure using <br> ```$ idkmng new```. <br> -->
-
----
-
-| **Field** | **Description** |
-|-----------|-----------------|
-| **`path`** | The path of the file where content will be saved. |
-| **`content`** | The content to be written to the file. |
-| **`keywords/placeholders`** | `idkmng` recognizes default keywords and placeholders, such as `{{$HOME}}` or `{{$CURRENTDIR}}`. Some keywords, like `{{$PROJECTNAME}}`, may prompt for user input. |
-| **Multiple Files** | You can include as many files as needed, each with its own `path` and `content`. |
-
----
-
-Here is a table of defualt keyword for idkmng:
+placeholders have a generic format of `{{$keyword}}`
 
 | Keyword/placeholder   | Value     | Example          |
 |--------------- | ---------------  | ---------------  |
-| PROJECTNAME   |                   |                  |
+| PROJECTNAME   | Asks for project name |                   |
 | CURRENTDIR    | Current directory | pwd=/foo/bar => `bar`|
 | HOME          | Home directory    | `/home/user/`    |
 | YYYY    | Current Year in YYYY format| 2024    |
@@ -111,7 +94,10 @@ Here is a table of defualt keyword for idkmng:
 | NOW | Current date and time | `2024-02-23 22:22:38.151417626 +00:00` |
 | NOW_UTC | Current date and time in UTC | `2024-02-23 22:21:17.897444668 UTC` |
 
-you can have keywords/placeholder that asks for user input to take as a value by using the following format `{{$%s:f}}` this already works with `{{$PROJECTNAME}}`. but you can have your own...<br>
+---
+### Functions
+you can enhance the functionality of your templates by using special placeholders that prompt for user input or retrieve values from environment variables. These placeholders follow the format `{{$keyword:function}}`
+
 Example: 
 ```toml
 # --snip
@@ -127,16 +113,28 @@ Functions supported by idkmng:
 | read   | Asks for user input to replace placeholder with   | `{{$TEST:read}}` |
 | env    | Replace with value from environment variables     | `{{$PATH:env}}` |
 
-also keep in mind that once a function gets called on a keyword you can use `{{$TEST:read}}` or `{{$TEST}}` both are going to work and value will be replaced for both of them.
+also keep in mind that once a function gets called on a keyword you can use `{{$TEST:read}}` or `{{$TEST}}` both are going to be replaced with the value that the function returned.
+
+## Git Support 🐙
+Initialize Git during project creation by using:
+
+```console
+$ idkmng /path/to/template --git
+```
+
+Or include Git option in the template itself:
+
+```toml
+[options]
+git=true
+project_root="{{$PROJECTNAME}}"
+```
 
 ### Example Templates
-I have a private personal templates repo that I may share soon, but for now I can only provide a few examples
+Here are a few examples:
 
 <details>
   <summary>Neovim Plugin [Click to expand]</summary>
-
-  Now this one overhere is just for basic neovim plugin structure I use to create nvim plugins for my personal use
-  also I have another one to create the docs for the plugin (just basic files not autogenerate docs)
 
 ```toml
 [info]
@@ -174,8 +172,7 @@ require("{{$PROJECTNAME}}")
 <details>
     <summary>Jekyll new blogpost [Click to expand]</summary>
 
-I am starting a Blog (still underconstruction 🏗️) but anyway I use this template to create a new post in my blog
-directly from CLI,This one here uses more keywords and includes a private BLOGPATH placeholder that it's value is loaded from config file.
+I use this template to create a new post in my blog directly from CLI,This one here uses more keywords and includes a private BLOGPATH placeholder that it's value is loaded from config file.
 
 ```toml
 [info]
@@ -201,7 +198,7 @@ tags: {{$Tags:read}}
 
 <details>
     <summary>Browser (Chrome) Extension [Click to expand]</summary>
-This one is just for creating a really BASIC chrome extension with no icon or anything else, I use it because I like it to be minimal, still can add more placeholders but since this is for private use I don't really care, about version etc...
+This one is just for creating a really BASIC chrome extension.
 
 ```toml
 [info] # Generated using `idkmng new` btw
@@ -234,7 +231,8 @@ console.log("Hello world!")
 
 ```
 
-*TIP 💡 *: Info section can have any additional values, it won't get printed but maybe usefull if sharing the template or just as a reference for docs like I did here
+> [!TIP]
+>  Info section can have any additional values, it won't get printed but maybe usefull when sharing the template or just as a reference for docs like I did here
 
 </details>
 
@@ -321,25 +319,53 @@ Example! 5 ff.html
 
 With this integration, you can create dynamic and flexible templates that combine the strengths of both `idkmng` and Liquid.
 
-## Git Support 🐙
-Initialize Git during project creation by using:
-
-```console
-$ idkmng /path/to/template --git
-```
-
-Or include Git support in the template itself:
-
-```toml
-[options]
-git=true
-project_root="{{$PROJECTNAME}}"
-```
-
 ## Automated Template generation 🚀
 Also there is one more time saving way! if you have some files in `/foo/bar/` you can just run `idkmng init` and it will create a template for you with directory name `bar.toml` and it will have all your files in it! 🌸
 
-## Special Keywords 🔧
+```console
+$ tree
+.
+├── lua
+│   └── test123
+│       └── init.lua
+└── plugin
+    └── init.lua
+
+4 directories, 2 files
+
+$ idkmng init
+Creating Template: test123.toml
+```
+
+```console
+$ cat test123.toml
+
+[[files]]
+path = 'plugin/init.lua'
+content = '''
+require("test123")
+'''
+
+[[files]]
+path = 'lua/test123/init.lua'
+content = '''
+local M = {}
+
+M.config = {}
+
+M.setup = function ()
+   if config ~= nil then
+        M.config = config
+    end
+
+end
+
+return M
+'''
+
+```
+
+## Config Keywords ⚙️
 You can have your own Keywords for idkmng to replace with desired values!
 Idkmng finds them stored in $HOME/.config/idkmng/config.toml Or the config path you specified using -c/--config option 🦀
 
