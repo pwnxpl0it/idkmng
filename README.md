@@ -201,8 +201,7 @@ tags: {{$Tags:read}}
 <details>
     <summary>Browser (Chrome) Extension [Click to expand]</summary>
 This one is just for creating a really BASIC chrome extension.
-> [!TIP]
-> Info section can have any additional values, it won't get printed but maybe usefull when sharing the template or just as a reference for docs like I did here
+
 	
 ```toml
 [info] # Generated using `idkmng new` btw
@@ -234,6 +233,9 @@ console.log("Hello world!")
 """
 
 ```
+
+ Info section can have any additional values, it won't get printed but maybe usefull when sharing the template or just as a reference for docs like I did here
+ 
 </details>
 
 
