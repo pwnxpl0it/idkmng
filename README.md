@@ -77,7 +77,7 @@ Content of file 2
 #etc...
 ```
 
-> [!INFO]
+> [!TIP]
 > Info section is not required and can be removed
 
 placeholders have a generic format of `{{$keyword}}`
@@ -96,7 +96,7 @@ placeholders have a generic format of `{{$keyword}}`
 
 ---
 ### Functions
-you can enhance the functionality of your templates by using special placeholders that prompt for user input or retrieve values from environment variables. These placeholders follow the format `{{$keyword:function}}`
+you can enhance the functionality of your templates by calling function that can perform actions on the placeholder name/value, like prompting for user input or retrieving values from environment variables, etc.., These placeholders follow the format `{{$keyword:function}}`
 
 Example: 
 ```toml
@@ -199,7 +199,9 @@ tags: {{$Tags:read}}
 <details>
     <summary>Browser (Chrome) Extension [Click to expand]</summary>
 This one is just for creating a really BASIC chrome extension.
-
+> [!TIP]
+> Info section can have any additional values, it won't get printed but maybe usefull when sharing the template or just as a reference for docs like I did here
+	
 ```toml
 [info] # Generated using `idkmng new` btw
 name = "browser_extension"
@@ -230,11 +232,8 @@ console.log("Hello world!")
 """
 
 ```
-
-> [!TIP]
->  Info section can have any additional values, it won't get printed but maybe usefull when sharing the template or just as a reference for docs like I did here
-
 </details>
+
 
 <!--TODO: Add more examples-->
 
