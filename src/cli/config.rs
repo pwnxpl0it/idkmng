@@ -4,13 +4,12 @@ use spark::Template;
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
-use std::path::PathBuf;
 use toml::Value;
 
 #[derive(Debug, Clone)]
 pub struct Config {
     pub path: String,
-    pub templates_path: PathBuf,
+    pub templates_path: String,
 }
 
 impl Config {
@@ -22,7 +21,7 @@ impl Config {
 
         Config {
             path: config_path,
-            templates_path: templates,
+            templates_path: shellexpand::tilde(&templates.to_str().unwrap()).to_string(),
         }
     }
 
@@ -62,7 +61,7 @@ content = '''
 '''
             "#
         .replace("CONFIGPATH", &self.path)
-        .replace("TEMPLATES_PATH", &self.templates_path.to_str().unwrap());
+        .replace("TEMPLATES_PATH", &self.templates_path);
 
         let template: Template = toml::from_str(&conf_template).unwrap();
 
