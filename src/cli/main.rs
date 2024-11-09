@@ -1,6 +1,6 @@
-use crate::config::Config;
-use idkmng::Keywords;
-use idkmng::Template;
+use crate::config::*;
+use spark::Keywords;
+use spark::Template;
 use std::fs;
 mod args;
 use args::Cli;

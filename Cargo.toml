@@ -1,17 +1,17 @@
 [package]
-name = "idkmng"
+name = "spark"
 version = "2.0.0"
 edition = "2021"
-repository = "https://github.com/pwnxpl0it/idkmng"
+repository = "https://github.com/pwnxpl0it/spark"
 authors = ["Mohamed Tarek @pwnxpl0it"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-name="idkmng"
+name="spark"
 path="src/core/lib.rs"
 
 [[bin]]
-name="idkmng"
+name="spark"
 path="src/cli/main.rs"
 
 [dependencies]

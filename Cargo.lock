@@ -385,24 +385,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "idkmng"
-version = "2.0.0"
-dependencies = [
- "chrono",
- "clap",
- "colored",
- "indexmap 2.2.6",
- "jq-rs",
- "liquid",
- "promptly",
- "regex",
- "serde",
- "serde_json",
- "shellexpand",
- "toml",
-]
-
-[[package]]
 name = "indexmap"
 version = "1.9.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -902,6 +884,24 @@ name = "smallvec"
 version = "1.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3c5e1a9a646d36c3599cd173a41282daf47c44583ad367b8e6837255952e5c67"
+
+[[package]]
+name = "spark"
+version = "2.0.0"
+dependencies = [
+ "chrono",
+ "clap",
+ "colored",
+ "indexmap 2.2.6",
+ "jq-rs",
+ "liquid",
+ "promptly",
+ "regex",
+ "serde",
+ "serde_json",
+ "shellexpand",
+ "toml",
+]
 
 [[package]]
 name = "static_assertions"

@@ -4,7 +4,7 @@ pub struct Cli {}
 
 impl Cli {
     pub fn parse() -> clap::ArgMatches {
-        App::new("idkmng")
+        App::new("spark")
             .about("A fast and flexible project initializer using TOML-based templates. Automate project setup, file generation, and reporting workflows with JSON input, dynamic placeholders, and optional Liquid support.")
             .version("2.0")
             .author("Mohamed Tarek @pwnxpl0it")
@@ -25,7 +25,7 @@ impl Cli {
                     .long("config")
                     .short('c')
                     .help("Config path")
-                    .default_value("~/.config/idkmng/config.toml")
+                    .default_value("~/.config/spark/config.toml")
                     .requires("template"),
             )
             .arg(

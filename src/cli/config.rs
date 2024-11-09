@@ -1,5 +1,5 @@
-use idkmng::Keywords;
-use idkmng::Template;
+use spark::Keywords;
+use spark::Template;
 use std::collections::HashMap;
 use std::fs;
 use toml::Value;
@@ -35,7 +35,7 @@ impl Config {
 path = 'TEMPLATES_PATH/new.toml'
 content = '''
 [info]
-name = "idkmng Template"
+name = "Spark Template"
 description = "A Template for making a template"
 author = "Mohamed Tarek @pwnxpl0it"
 
