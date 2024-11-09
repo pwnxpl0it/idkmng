@@ -1,6 +1,6 @@
 # Spark: A TOML based project initializer.
 
-spark is a TOML-based project initializer that helps you quickly set up project directories and files according to predefined templates. It's designed for developers who want to streamline their workflow by automating the creation of consistent project structures.
+Spark is a TOML-based project initializer that helps you quickly set up project directories and files according to predefined templates. It's designed for developers who want to streamline their workflow by automating the creation of consistent project structures.
 
 Template-based, with easy [TOML](https://toml.io/en/) support!
 
@@ -140,7 +140,14 @@ Functions supported by spark:
 
 also keep in mind that once a function gets called on a keyword you can use `{{$TEST:read}}` or `{{$TEST}}` both are going to be replaced with the value that the function returned.
 
-## Git Support 🐙
+### Template Options
+
+Template options in spark provide a way to customize the project setup by allowing predefined variables or settings within the template. These options are defined in the TOML configuration file of the template and can control various aspects of the template generation process.
+
+Right now it's only for git support, but more options will be added later.
+
+
+#### Git Support 🐙
 Initialize Git during project creation by using:
 
 ```console
@@ -152,7 +159,7 @@ Or include Git option in the template itself:
 ```toml
 [options]
 git=true
-project_root="{{$PROJECTNAME}}"
+project_root="{{$PROJECTNAME}}" # will prompt for the project name but you can set this to constant value
 ```
 
 ### Example Templates
@@ -393,7 +400,7 @@ return M
 
 ## Config Keywords ⚙️
 You can have your own Keywords for spark to replace with desired values!
-Idkmng finds them stored in $HOME/.config/spark/config.toml Or the config path you specified using -c/--config option 🦀
+Spark finds them stored in $HOME/.config/spark/config.toml Or the config path you specified using -c/--config option 🦀
 
 ```toml
 [Keywords]
