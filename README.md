@@ -1,4 +1,4 @@
-# spark: A TOML based project initializer.
+# Spark: A TOML based project initializer.
 
 spark is a TOML-based project initializer that helps you quickly set up project directories and files according to predefined templates. It's designed for developers who want to streamline their workflow by automating the creation of consistent project structures.
 
