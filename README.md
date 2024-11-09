@@ -7,6 +7,26 @@ Template-based, with easy [TOML](https://toml.io/en/) support!
 > [!WARNING]
 > This repo was named "idkmng" before, some issues will contain the previous name.
 
+## Table of Contents
+
+- [Idea 🧠](#idea-)
+- [Installation](#installation)
+- [Creating a template 📜](#creating-a-template-)
+- [Functions](#functions)
+- [Git Support 🐙](#git-support-)
+- [Example Templates](#example-templates)
+  - [Neovim Plugin](#neovim-plugin-click-to-expand)
+  - [Jekyll new blogpost](#jekyll-new-blogpost-click-to-expand)
+  - [Browser (Chrome) Extension](#browser-chrome-extension-click-to-expand)
+- [Loading values from json](#loading-values-from-json)
+- [Liquid Templating Support 🧪](#liquid-templating-support-)
+- [Automated Template generation 🚀](#automated-template-generation-)
+- [Config Keywords ⚙️](#config-keywords-%EF%B8%8F)
+- [Neovim plugin (spark.nvim)](#-neovim-plugin-sparknvim)
+
+---
+
+
 ## Idea 🧠:
 Creating a project often involves setting up specific files with unique formats. For instance, a browser extension requires files like:
 
