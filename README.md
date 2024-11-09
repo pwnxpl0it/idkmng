@@ -4,6 +4,9 @@ spark is a TOML-based project initializer that helps you quickly set up project 
 
 Template-based, with easy [TOML](https://toml.io/en/) support!
 
+> [!WARNING]
+> This repo was named "idkmng" before, some issues will contain the previous name.
+
 ## Idea 🧠:
 Creating a project often involves setting up specific files with unique formats. For instance, a browser extension requires files like:
 
