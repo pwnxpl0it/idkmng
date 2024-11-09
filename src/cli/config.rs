@@ -1,28 +1,28 @@
+use colored::Colorize;
 use spark::Keywords;
 use spark::Template;
 use std::collections::HashMap;
 use std::fs;
+use std::path::Path;
+use std::path::PathBuf;
 use toml::Value;
 
 #[derive(Debug, Clone)]
 pub struct Config {
     pub path: String,
-    pub templates_path: String,
+    pub templates_path: PathBuf,
 }
 
 impl Config {
     pub fn new(path: &str) -> Self {
         let config_path = shellexpand::tilde(path).to_string();
-        let mut config_dir: Vec<&str> = path.split('/').collect();
+        let config_dir = Path::new(path).parent().unwrap();
 
-        config_dir.pop();
-
-        //NOTE: maybe templates path should be parsed from config.toml itself??
-        let templates = config_dir.join("/") + "/templates/";
+        let templates = Path::new(config_dir).join("templates");
 
         Config {
             path: config_path,
-            templates_path: shellexpand::tilde(&templates).to_string(),
+            templates_path: templates,
         }
     }
 
@@ -62,7 +62,7 @@ content = '''
 '''
             "#
         .replace("CONFIGPATH", &self.path)
-        .replace("TEMPLATES_PATH", &self.templates_path);
+        .replace("TEMPLATES_PATH", &self.templates_path.to_str().unwrap());
 
         let template: Template = toml::from_str(&conf_template).unwrap();
 
@@ -84,7 +84,13 @@ content = '''
                 keywords.insert(Keywords::from(key.to_string(), None), value_str);
             }
         } else {
+            println!(
+                "\n[{}] {}\n",
+                "INFO".bold().blue(),
+                "Looks like it's your first time running spark, creating config files and templates for you".green()
+            );
             Self::init(self, keywords.clone());
+            println!("");
         }
 
         keywords

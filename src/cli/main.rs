@@ -34,7 +34,7 @@ fn main() {
         }
 
         let full_template_path = if fs::read_to_string(&template).is_err() {
-            format!("{}{}", config.templates_path, template)
+            format!("{}{}", config.templates_path.to_string_lossy(), template)
         } else {
             template
         };

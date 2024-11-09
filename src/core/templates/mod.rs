@@ -88,7 +88,7 @@ impl Template {
         let mut output = String::from("");
         let re = Regex::new(KEYWORDS_REGEX).unwrap();
         let files = self.files.clone().expect("No files table");
-        let mut options = self.dump_options().expect("No options");
+        let mut options = self.dump_options().unwrap_or_default();
 
         files.into_iter().for_each(|file| {
             *keywords = Fns::find_and_exec(
