@@ -2,7 +2,6 @@
 # This script is just for testing a few use cases before pushing to repo
 # I will push unit tests when I finish writing them..
 
-#!/bin/bash
 # Color definitions
 GREEN="\033[0;32m"
 YELLOW="\033[1;33m"
