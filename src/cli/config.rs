@@ -83,7 +83,7 @@ content = '''
                 keywords.insert(Keywords::from(key.to_string(), None), value_str);
             }
         } else {
-            println!(
+            eprintln!(
                 "\n[{}] {}\n",
                 "INFO".bold().blue(),
                 "Looks like it's your first time running spark, creating config files and templates for you".green()

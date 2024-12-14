@@ -107,7 +107,7 @@ impl Fns {
                 if let Ok(value) = Self::exec(function, keyword_name) {
                     match function {
                         Self::None => {
-                            println!(
+                            eprintln!(
                                 "\n[{}] {}: {}",
                                 "WRN".yellow(),
                                 "Value not found".yellow(),
@@ -122,9 +122,8 @@ impl Fns {
                     }
                 }
             }
-        } else {
-            // Ignore
         }
+
         keywords
     }
 }

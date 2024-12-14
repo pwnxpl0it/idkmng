@@ -9,13 +9,14 @@ pub fn check_git() -> Result<(), String> {
 }
 
 pub fn git_init(project_root: &str) {
+
     if let Err(e) = check_git() {
-        println!("{}: {}", "error".red().bold(), e.red().bold());
+        eprintln!("{}: {}", "error".red().bold(), e.red().bold());
         return;
     }
 
     if let Err(e) = std::env::set_current_dir(project_root) {
-        println!(
+        eprintln!(
             "{}: {}",
             "error".red().bold(),
             format!("Failed to change directory: {}", e).red().bold()
@@ -32,14 +33,14 @@ pub fn git_init(project_root: &str) {
         if status.success() {
             println!("{}", "\n✅ Git initialized successfully.".green().bold());
         } else {
-            println!(
+            eprintln!(
                 "{}: {}",
                 "error".red().bold(),
                 "Git initialization failed.".red().bold()
             );
         }
     } else {
-        println!(
+        eprintln!(
             "{}: {}",
             "error".red().bold(),
             "Failed to run git command.".red().bold()

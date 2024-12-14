@@ -74,7 +74,7 @@ fn main() {
         parsed_template.set_options(options);
         parsed_template.extract(&mut keywords);
     } else {
-        println!(
+        eprintln!(
             "{} {}",
             "No args specified please use".yellow(),
             "--help".bold().green()
